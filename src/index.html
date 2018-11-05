@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Vue.js Application</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#182D72">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    </head>
+    <body>
+        <noscript>JavaScript is required to display site content.</noscript>
+        <router-app id="neit-app">
+            <div class="material-loader">
+                <svg class="material-spinner" width="66px" height="66px" stroke-width="5" viewBox="0 0 66 66">
+                    <circle cx="33" cy="33" r="25" />
+                </svg>
+                <p class="center-text">Loading</p>
+            </div>
+        </router-app>
+        <style>
+            .material-loader {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-content: center;
+                align-self: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            .material-spinner {
+                display: flex;
+                align-content: center;
+                align-self: center;
+                justify-content: center;
+                animation: rotate 2s linear infinite;
+            }
+
+            .center-text {
+                display: flex;
+                align-content: center;
+                align-self: center;
+            }
+
+            .material-spinner circle {
+                fill: none;
+                stroke: #182D72;
+                stroke-dasharray: 2, 155;
+                stroke-dashoffset: 0;
+                animation: dash 1.35s cubic-bezier(0.4,0,0.2,1) infinite;
+            }
+
+            @keyframes dash {
+                0% {
+                    stroke-dasharray: 2, 155;
+                    stroke-dashoffset: 0;
+                }
+                50% {
+                    stroke-dasharray: 122, 20;
+                    stroke-dashoffset: -20;
+                }
+                100% {
+                    stroke-dasharray: 2, 155;
+                    stroke-dashoffset: -155;
+                }
+            }
+
+            @keyframes rotate {
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </body>
+</html>
