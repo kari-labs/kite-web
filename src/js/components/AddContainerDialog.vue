@@ -26,7 +26,7 @@
             <v-divider/>
             <v-card-actions>
                 <v-spacer/>
-                <v-btn color="primary" flat @click.native="showDialog = false">Cancel</v-btn>
+                <v-btn color="primary" flat @click.native="closeDialog">Cancel</v-btn>
                 <v-btn color="primary" flat :disabled="!formValid" @click.native="createContainer">Create</v-btn>
             </v-card-actions>
         </v-card>
@@ -40,6 +40,10 @@
                 if(this.$refs.form.validate()) {
                     this.implementVisible = true
                 }
+            },
+            closeDialog() {
+                this.showDialog = false
+                this.$refs.form.reset()
             }
         },
         data: () => ({
