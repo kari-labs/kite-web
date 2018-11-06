@@ -22,14 +22,8 @@ async function renderPage() {
                 const routes = [
                     {
                         path: '/',
-                        name: 'login',
-                        component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
-                    },
-                    {
-                        path: '/dist',
-                        redirect: {
-                            name: 'login'
-                        }
+                        name: 'listContainers',
+                        component: () => import(/* webpackChunkName: "containerDashboard" */ './views/ContainerDashboard.vue')
                     }
                 ]
 

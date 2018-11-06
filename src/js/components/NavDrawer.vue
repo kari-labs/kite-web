@@ -15,22 +15,20 @@
 
 <script>
     export default {
-        data() {
-            return {
-                items: [
-                    {
-                        title: 'Home',
-                        icon: 'dashboard',
-                        route: 'login'
-                    },
-                    {
-                        title: 'Report Bug',
-                        icon: 'bug_report'
-                    }
-                ],
-                drawer: false
-            }
-        },
+        data: () => ({
+            items: [
+                {
+                    title: 'Home',
+                    icon: 'dashboard',
+                    route: 'listContainers'
+                },
+                {
+                    title: 'Report Bug',
+                    icon: 'bug_report'
+                }
+            ],
+            drawer: false
+        }),
         methods: {
             handleRoute(routeName) {
                 if(routeName) this.$router.push({ name: routeName})
