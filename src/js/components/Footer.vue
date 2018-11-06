@@ -6,13 +6,12 @@
                     <v-icon size="24px" color="secondary">{{icon}}</v-icon>
                 </v-btn>
             </v-card-text>
-            <v-card-text class="pt-0 secondary-text product-sans">
+            <v-card-text class="pt-0 secondary-text">
                 Use of this system is limited to authorized persons of New England Institute of Technology.
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-text class="secondary-text product-sans">
+            <v-card-text class="secondary-text">
                 &copy;2018 — <strong>Joseph Zurowski</strong> <br />
-                Product Sans &copy;2015 — 2018 <strong>google_logo</strong>
             </v-card-text>
         </v-card>
     </v-footer>

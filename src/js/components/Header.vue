@@ -1,13 +1,13 @@
 <template>
-    <div class="test">
+    <div>
         <nav-drawer ref="navDrawer"></nav-drawer>
         <v-toolbar app relative dark clipped-left color="primary">
             <v-toolbar-side-icon @click.stop="toggleDrawer" temporary class="secondary-text" aria-label="Toggle side navigation drawer"></v-toolbar-side-icon>
-            <v-toolbar-title class="secondary-text product-sans" @click="pushDash">NEIT Kite</v-toolbar-title>
+            <v-toolbar-title class="secondary-text" @click="pushDash">NEIT Kite</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
-                <v-btn flat color="secondary" class="product-sans" slot="activator" :to="''" aria-label="Container Dashboard">Container Dashboard</v-btn>
-                <v-btn flat color="secondary" class="product-sans" aria-label="Report a Bug">Report Bug</v-btn>
+                <v-btn flat color="secondary" slot="activator" :to="''" aria-label="Container Dashboard">Container Dashboard</v-btn>
+                <v-btn flat color="secondary" aria-label="Report a Bug">Report Bug</v-btn>
             </v-toolbar-items>
         </v-toolbar>
     </div>
