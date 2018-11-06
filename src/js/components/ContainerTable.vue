@@ -1,7 +1,8 @@
 <template>
     <div>
         <v-toolbar class="elevation-2" flat color="white">
-            <v-toolbar-title>Available Containers</v-toolbar-title>
+            <v-toolbar-title v-if="$vuetify.breakpoint.smAndUp">Available Containers</v-toolbar-title>
+            <v-toolbar-title v-else>Containers</v-toolbar-title>
             <v-divider class="mx-2" inset vertical/>
             <v-spacer/>
             <add-dialog/>
