@@ -6,12 +6,19 @@
                 <span class="headline">New Container</span>
             </v-card-title>
             <v-divider/>
-            <not-implemented :alert="alertVisible"/>
+            <error-alert :alert="implementVisible && formValid" text="Not implemented"/>
+            <error-alert :alert="!formValid" text="Please correct the errors and try again"/>
             <v-card-text>
                 <v-container grid-list-md>
                     <v-layout wrap>
                         <v-flex xs12>
-                            <v-text-field v-model="studentID" label="Student ID"/>
+                            <v-form ref="form" v-model="formValid" lazy-validation>
+                                <v-text-field 
+                                    v-model="studentID"
+                                    :rules="idRules"
+                                    label="Student ID"
+                                    required/>
+                            </v-form>
                         </v-flex>
                     </v-layout>
                 </v-container>
@@ -20,7 +27,7 @@
             <v-card-actions>
                 <v-spacer/>
                 <v-btn color="primary" flat @click.native="showDialog = false">Cancel</v-btn>
-                <v-btn color="primary" flat @click.native="createContainer">Create</v-btn>
+                <v-btn color="primary" flat :disabled="!formValid" @click.native="createContainer">Create</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -30,17 +37,25 @@
     export default {
         methods: {
             createContainer() {
-                console.log('Not implemented')
-                this.alertVisible = true
+                if(this.$refs.form.validate()) {
+                    this.implementVisible = true
+                }
             }
         },
         data: () => ({
             studentID: '',
             showDialog: false,
-            alertVisible: false
+            implementVisible: false,
+            formValid: true,
+            idRules: [
+                v => !!v || 'Student ID is required',
+                // Matches anything that is a digit
+                // because student ids only have digits
+                v => /\d/.test(v) || 'Student IDs may only contain numbers'
+            ]
         }),
         components: {
-            'not-implemented': () => import(/* webpackChunkName: "notImplementedHelpers", webpackPrefetch: true */ './NotImplementedAlert.vue')
+            'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ './ErrorAlert.vue')
         }
     }
 </script>

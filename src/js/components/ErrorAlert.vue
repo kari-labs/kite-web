@@ -1,14 +1,15 @@
 <template>
     <v-alert :value="alert" type="error" icon="warning" transition="slide-y-transition">
-        Not Implemented
+        {{text}}
     </v-alert>
 </template>
 
 <script>
     export default {
-        props: {
-            alert: false
-        }
+        props: [
+            'alert',
+            'text'
+        ]
     }
 </script>
 

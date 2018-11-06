@@ -1,6 +1,6 @@
 {
   "name": "kite-web",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Front-end for managing Docker containers for New England Institute of Technology students and faculty",
   "main": "src/js/main.js",
   "scripts": {
