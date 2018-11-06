@@ -5,6 +5,12 @@ jspm_packages
 # Serverless directories
 .serverless
 
+# VSCode directories
+.vscode
+
+# Jest Coverage Reports
+coverage
+
 dist
 
 stats.json
