@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="showDialog" lazy max-width="500px">
+    <v-dialog v-model="showDialog" persistent lazy max-width="500px">
         <v-btn class="mb-2" slot="activator" color="primary" dark>New Container</v-btn>
         <v-card>
             <v-card-title>
@@ -36,11 +36,15 @@
 <script>
     export default {
         methods: {
+            // Sends a POST request to create a container with
+            // the given student ID
             createContainer() {
+                // If the form is valid
                 if(this.$refs.form.validate()) {
                     this.implementVisible = true
                 }
             },
+            // Closes the dialog and resets the form
             closeDialog() {
                 this.showDialog = false
                 this.$refs.form.reset()
@@ -52,6 +56,7 @@
             implementVisible: false,
             formValid: true,
             idRules: [
+                // If the input is empty, null or false
                 v => !!v || 'Student ID is required',
                 // Matches anything that is a digit
                 // because student ids only have digits

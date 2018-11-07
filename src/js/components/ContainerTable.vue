@@ -10,7 +10,7 @@
         <v-data-table 
             :headers="headers"
             :items="fetchReturn"
-            :loading="true"
+            :loading="tableLoading"
             hide-actions
             class="elevation-1">
             <v-progress-linear slot="progress" color="primary" indeterminate/>
@@ -37,9 +37,11 @@
             // Only runs when the template is fully rendered
             this.$nextTick(() => {
                 console.log('Component Loaded!')
+                this.listContainers()
             })
         },
         data: () => ({
+            tableLoading: true,
             headers: [
                 {
                     text: 'Owner',
@@ -65,11 +67,22 @@
             fetchReturn: []
         }),
         methods: {
-            async listContainers() {
-                let dataRequest = new Request('http://kite.yeet.pro:3000/api/docker/001416358');
+            listContainers() {
+                return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
+                    const headers = new Headers()
+                    const init = {
+                        method: 'GET',
+                        headers,
+                        mode: 'cors',
+                        cache: 'no-store'
+                    }
+                    let request = new Request(`${Kite}api/docker`, init)
 
-                fetch(dataRequest).then((response) => {
-                    console.log(response.json())
+                    fetch(request).then(async(response) => {
+                        // Request has loaded successfully, disable loader bar
+                        this.tableLoading = false
+                        console.log(await response.json())
+                    })
                 })
             }
         }
