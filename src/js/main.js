@@ -43,7 +43,7 @@ async function renderPage() {
                 Sentry.init({
                     dsn: 'https://ce48afe38fc14804846ebd78297611c3@sentry.io/1307382',
                     integrations: [new Sentry.Integrations.Vue({ Vue })],
-                    release: 'neit-kite@0.1.4'
+                    release: 'neit-kite@0.1.5'
                 })
             }) 
         })

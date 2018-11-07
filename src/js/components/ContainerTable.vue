@@ -7,12 +7,21 @@
             <v-spacer/>
             <add-dialog/>
         </v-toolbar>
-        <v-data-table :headers="headers" :items="fetchReturn" hide-actions class="elevation-1">
+        <v-data-table 
+            :headers="headers"
+            :items="fetchReturn"
+            :loading="true"
+            hide-actions
+            class="elevation-1">
+            <v-progress-linear slot="progress" color="primary" indeterminate/>
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.owner }}</td>
                 <td class="text-xs-right">{{ props.item.status }}</td>
                 <td class="text-xs-right">{{ props.item.timeStarted }}</td>
                 <td class="text-xs-right">{{ props.item.action }}</td>
+            </template>
+            <template slot="no-data">
+                <error-alert :alert="true" text="There are no active containers."/>
             </template>
         </v-data-table>
     </div>
@@ -21,7 +30,14 @@
 <script>
     export default {
         components: {
-            'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ './AddContainerDialog.vue')
+            'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ './AddContainerDialog.vue'),
+            'error-alert': () => import(/* webpackChunkName: "alertHelpers" */ './ErrorAlert.vue')
+        },
+        mounted() {
+            // Only runs when the template is fully rendered
+            this.$nextTick(() => {
+                console.log('Component Loaded!')
+            })
         },
         data: () => ({
             headers: [
@@ -63,4 +79,6 @@
 <style lang="stylus" scoped>
     .v-divider.v-divider--inset
         margin-left 16px !important
+    .v-alert.error
+        margin-bottom 0px !important
 </style>
