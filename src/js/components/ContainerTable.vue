@@ -11,7 +11,6 @@
             :headers="headers"
             :items="fetchReturn"
             :loading="tableLoading"
-            hide-actions
             class="elevation-1">
             <v-progress-linear slot="progress" color="primary" indeterminate/>
             <template slot="items" slot-scope="props">
@@ -23,6 +22,13 @@
                 </td>
                 <td class="text-xs-left">{{ props.item.State.StartedAt }}</td>
                 <td class="justify-center layout px-0">
+                    <v-icon
+                        small
+                        disabled
+                        class="mr-2">
+                        open_in_new
+                    </v-icon>
+                    
                     <v-icon
                         small
                         disabled

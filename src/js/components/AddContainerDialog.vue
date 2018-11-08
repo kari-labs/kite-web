@@ -7,7 +7,6 @@
                     <span class="headline">New Container</span>
                 </v-card-title>
                 <v-divider/>
-                <error-alert :alert="implementVisible && formValid" text="Not implemented"/>
                 <error-alert :alert="!formValid" text="Please correct the errors and try again"/>
                 <v-card-text>
                     <v-container grid-list-md>
@@ -17,7 +16,7 @@
                                     <v-text-field 
                                         v-model="studentID"
                                         :rules="idRules"
-                                        :disabled="loading"
+                                        :disabled="loading || responseError"
                                         label="Student ID"
                                         required/>
                                 </v-form>
@@ -28,12 +27,13 @@
                 <v-divider/>
                 <v-card-actions>
                     <v-spacer/>
-                    <v-btn color="primary" flat :disabled="loading" @click.native="closeDialog">Cancel</v-btn>
-                    <v-btn color="primary" flat :disabled="!formValid || loading" @click.native="createContainer">Create</v-btn>
+                    <v-btn color="primary" flat :disabled="loading || responseError" @click.native="closeDialog">Cancel</v-btn>
+                    <v-btn color="primary" flat :disabled="!formValid || loading || responseError" @click.native="createContainer">Create</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <progress-dialog v-model="loading" @visChange="onProgressChange"/>
+        <error-dialog v-model="responseError" @responseError="onResponseError"/>
     </div>
 </template>
 
@@ -46,7 +46,27 @@
                 // If the form is valid
                 if(this.$refs.form.validate()) {
                     this.loading = true
-                    this.implementVisible = true
+
+                    return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
+                        const headers = new Headers()
+                        const init = {
+                            method: 'POST',
+                            headers,
+                            mode: 'cors',
+                            cache: 'no-store'
+                        }
+
+                        let request = new Request(`${Kite}api/docker/${this.studentID}`, init)
+
+                        fetch(request).then(async(response) => {
+                            console.log(await response.json())
+                            this.loading = false
+                            if(response.status === 500){
+                                console.log('500 error detected')
+                                this.responseError = true
+                            }
+                        })
+                    })
                 }
             },
             // Closes the dialog and resets the form
@@ -56,13 +76,16 @@
             },
             onProgressChange(val) {
                 this.loading = val
+            },
+            onResponseError(val) {
+
             }
         },
         data: () => ({
             studentID: '',
             showDialog: false,
             loading: false,
-            implementVisible: false,
+            responseError: false,
             formValid: true,
             idRules: [
                 // If the input is empty, null or false
@@ -74,6 +97,7 @@
         }),
         components: {
             'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ './ErrorAlert.vue'),
+            'error-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ './ErrorDialog.vue'),
             'progress-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ './ProgressDialog.vue')
         }
     }
