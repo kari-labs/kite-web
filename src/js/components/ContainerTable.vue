@@ -15,10 +15,27 @@
             class="elevation-1">
             <v-progress-linear slot="progress" color="primary" indeterminate/>
             <template slot="items" slot-scope="props">
-                <td>{{ props.item.owner }}</td>
-                <td class="text-xs-right">{{ props.item.status }}</td>
-                <td class="text-xs-right">{{ props.item.timeStarted }}</td>
-                <td class="text-xs-right">{{ props.item.action }}</td>
+                <td>{{ props.item.Name }}</td>
+                <td class="text-xs-left">
+                    <span v-if="props.item.State.Running" class="green--text">Running</span>
+                    <span v-else-if="props.item.State.Dead" class="red--text">Dead</span>
+                    <span v-else-if="props.item.State.Restarting" class="orange--text">Restarting</span>
+                </td>
+                <td class="text-xs-left">{{ props.item.State.StartedAt }}</td>
+                <td class="justify-center layout px-0">
+                    <v-icon
+                        small
+                        disabled
+                        class="mr-2">
+                        folder_open
+                    </v-icon>
+                    <v-icon
+                        small
+                        disabled
+                        class="mr-2">
+                        delete
+                    </v-icon>
+                </td>
             </template>
             <template slot="no-data">
                 <error-alert :alert="true" text="There are no active containers."/>
@@ -79,9 +96,25 @@
                     let request = new Request(`${Kite}api/docker`, init)
 
                     fetch(request).then(async(response) => {
+                        // Convert returned data to json
+                        return await response.json()
+                    }).then((parsedData) => {
+                        parsedData.forEach((element, index) => {
+                            let name = element.Name
+                            let timeStart = element.State.StartedAt
+                            // Filter out the beginning '/' and the leading 'php'
+                            // Use the first result so we don't turn name into an array
+                            name = name.match(/\b\d+/)[0]
+                            timeStart = new Date(timeStart).toLocaleString()
+
+                            parsedData[index].Name = name
+                            parsedData[index].State.StartedAt = timeStart
+                        })
+                        console.log(parsedData)
+                        this.fetchReturn = parsedData
+
                         // Request has loaded successfully, disable loader bar
                         this.tableLoading = false
-                        console.log(await response.json())
                     })
                 })
             }

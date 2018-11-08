@@ -64,7 +64,7 @@ module.exports = {
     devServer: {
         compress: true,
         hot: true,
-        https: false,
+        https: true,
         watchOptions: {
             poll: true
         },
