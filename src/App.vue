@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <v-app>
     <neit-header></neit-header>
     <v-content id="content" class="scroll-y">
         <router-view></router-view>
     </v-content>
     <neit-footer></neit-footer>
-  </div>
+  </v-app>
 </template>
 
 <script>

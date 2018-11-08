@@ -47,8 +47,8 @@
 <script>
     export default {
         components: {
-            'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ './AddContainerDialog.vue'),
-            'error-alert': () => import(/* webpackChunkName: "alertHelpers" */ './ErrorAlert.vue')
+            'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ '@/components/AddContainerDialog.vue'),
+            'error-alert': () => import(/* webpackChunkName: "alertHelpers" */ '@/components/ErrorAlert.vue')
         },
         mounted() {
             // Only runs when the template is fully rendered
@@ -85,7 +85,7 @@
         }),
         methods: {
             listContainers() {
-                return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
+                return import(/* webpackChunkName: "mixins" */ '@/mixins/api.js').then(({ default: Kite }) => {
                     const headers = new Headers()
                     const init = {
                         method: 'GET',
