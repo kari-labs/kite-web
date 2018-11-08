@@ -5,11 +5,11 @@
             <v-toolbar-title v-else>Containers</v-toolbar-title>
             <v-divider class="mx-2" inset vertical/>
             <v-spacer/>
-            <add-dialog @triggerRefresh="refreshContainers"/>
+            <add-dialog @triggerRefresh="listContainers"/>
         </v-toolbar>
         <v-data-table 
             :headers="headers"
-            :items="fetchReturn"
+            :items="availableContainers"
             :loading="tableLoading"
             prev-icon="keyboard_arrow_left"
             next-icon="keyboard_arrow_right"
@@ -18,7 +18,15 @@
             class="elevation-1">
             <v-progress-linear slot="progress" color="primary" indeterminate/>
             <template slot="items" slot-scope="props">
-                <td>{{ props.item.Name }}</td>
+                <td>
+                    <v-btn 
+                        block
+                        flat
+                        :to="{ name: 'manageContainer', params: { id: props.item.Name }}"
+                        color="primary">
+                        {{ props.item.Name }}
+                    </v-btn>
+                </td>
                 <td class="text-xs-left">
                     <span v-if="props.item.State.Running" class="green--text">Running</span>
                     <span v-else-if="props.item.State.Dead" class="red--text">Dead</span>
@@ -97,9 +105,13 @@
                     text: 'Action',
                     sortable: false
                 }
-            ],
-            fetchReturn: []
+            ]
         }),
+        computed: {
+            availableContainers() {
+                return this.$store.getters.getAllContainers
+            }
+        },
         methods: {
             listContainers() {
                 this.tableLoading = true
@@ -129,15 +141,14 @@
                             parsedData[index].State.StartedAt = timeStart
                         })
                         console.log(parsedData)
-                        this.fetchReturn = parsedData
+
+                        // Commit to Vuex store
+                        this.$store.commit('updateContainers', parsedData)
 
                         // Request has loaded successfully, disable loader bar
                         this.tableLoading = false
                     })
                 })
-            },
-            refreshContainers() {
-                this.listContainers()
             }
         }
     }
