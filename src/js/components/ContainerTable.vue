@@ -26,24 +26,25 @@
                 </td>
                 <td class="text-xs-left">{{ props.item.State.StartedAt }}</td>
                 <td class="justify-center layout px-0">
-                    <v-icon
+                    <v-btn
+                        icon
                         small
-                        disabled
-                        class="mr-2">
-                        open_in_new
-                    </v-icon>
-                    <v-icon
-                        small
-                        disabled
-                        class="mr-2">
-                        folder_open
-                    </v-icon>
-                    <v-icon
-                        small
-                        disabled
-                        class="mr-2">
-                        delete
-                    </v-icon>
+                        :href="`https://${props.item.Name}.kite.neit.icu/`"
+                        target="_blank">
+                        <v-icon small class="mr-2">
+                            open_in_new
+                        </v-icon>
+                    </v-btn>
+                    <v-btn icon small disabled>
+                        <v-icon small class="mr-2">
+                            folder_open
+                        </v-icon>
+                    </v-btn>
+                    <v-btn icon small disabled>
+                        <v-icon small class="mr-2">
+                            delete
+                        </v-icon>
+                    </v-btn>
                 </td>
             </template>
             <template slot="no-data">
@@ -62,12 +63,19 @@
         mounted() {
             // Only runs when the template is fully rendered
             this.$nextTick(() => {
-                console.log('Component Loaded!')
+                // Auto refreshes the page every 60 seconds
                 this.listContainers()
+                this.timer = setInterval(() => {
+                    this.listContainers()
+                }, 60000)
             })
+        },
+        beforeDestroy() {
+            clearInterval(this.timer)
         },
         data: () => ({
             tableLoading: true,
+            timer: null,
             headers: [
                 {
                     text: 'Owner',
