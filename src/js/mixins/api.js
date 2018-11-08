@@ -1,2 +1,2 @@
-const baseRoute = 'http://kite.yeet.pro:3000/'
+const baseRoute = 'http://kite.yeet.pro/'
 export { baseRoute as default }
