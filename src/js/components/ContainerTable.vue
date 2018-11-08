@@ -5,12 +5,16 @@
             <v-toolbar-title v-else>Containers</v-toolbar-title>
             <v-divider class="mx-2" inset vertical/>
             <v-spacer/>
-            <add-dialog/>
+            <add-dialog @triggerRefresh="refreshContainers"/>
         </v-toolbar>
         <v-data-table 
             :headers="headers"
             :items="fetchReturn"
             :loading="tableLoading"
+            prev-icon="keyboard_arrow_left"
+            next-icon="keyboard_arrow_right"
+            sort-icon="arrow_downward"
+            must-sort
             class="elevation-1">
             <v-progress-linear slot="progress" color="primary" indeterminate/>
             <template slot="items" slot-scope="props">
@@ -28,7 +32,6 @@
                         class="mr-2">
                         open_in_new
                     </v-icon>
-                    
                     <v-icon
                         small
                         disabled
@@ -91,6 +94,7 @@
         }),
         methods: {
             listContainers() {
+                this.tableLoading = true
                 return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
                     const headers = new Headers()
                     const init = {
@@ -123,6 +127,9 @@
                         this.tableLoading = false
                     })
                 })
+            },
+            refreshContainers() {
+                this.listContainers()
             }
         }
     }

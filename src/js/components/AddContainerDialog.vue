@@ -33,12 +33,16 @@
             </v-card>
         </v-dialog>
         <progress-dialog v-model="loading" @visChange="onProgressChange"/>
-        <error-dialog v-model="responseError" @responseError="onResponseError"/>
+        <error-dialog v-model="responseError" @closeDialog="onResponse"/>
+        <success-dialog v-model="responseOkay" @closeDialog="onResponse"/>
     </div>
 </template>
 
 <script>
     export default {
+        model: {
+            event: 'triggerRefresh'
+        },
         methods: {
             // Sends a POST request to create a container with
             // the given student ID
@@ -62,8 +66,11 @@
                             console.log(await response.json())
                             this.loading = false
                             if(response.status === 500){
-                                console.log('500 error detected')
                                 this.responseError = true
+                            } else {
+                                this.responseOkay = true
+                                this.closeDialog()
+                                this.$emit('triggerRefresh')
                             }
                         })
                     })
@@ -77,15 +84,14 @@
             onProgressChange(val) {
                 this.loading = val
             },
-            onResponseError(val) {
-
-            }
+            onResponse(val) {}
         },
         data: () => ({
             studentID: '',
             showDialog: false,
             loading: false,
             responseError: false,
+            responseOkay: false,
             formValid: true,
             idRules: [
                 // If the input is empty, null or false
@@ -98,6 +104,7 @@
         components: {
             'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ './ErrorAlert.vue'),
             'error-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ './ErrorDialog.vue'),
+            'success-dialog': () => import(/* webpackChunkName: "dialogHelpers" */ './SuccessDialog.vue'),
             'progress-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ './ProgressDialog.vue')
         }
     }

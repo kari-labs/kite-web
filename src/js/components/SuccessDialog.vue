@@ -1,15 +1,18 @@
 <template>
+    <!-- If the dialog isn't persistent, we will get a Vue warning
+        This can be fixed by adding a watcher, or we can leave it
+        as is. -->
     <v-dialog
         v-model="visible"
         persistent
         width="380">
-        <v-card color="red" dark>
+        <v-card color="green darken-3" dark>
             <v-card-title>
-                <span class="headline">Error</span>
+                <span class="headline">Container Added</span>
             </v-card-title>
             <v-divider/>
             <v-card-text>
-                There was a server error while processing your request.
+                The container was added successfully.
             </v-card-text>
             <v-divider/>
             <v-card-actions>
