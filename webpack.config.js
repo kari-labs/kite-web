@@ -160,6 +160,14 @@ module.exports = {
                 query: {
                     name: 'assets/[name].[ext]'
                 }
+            },
+            {
+                test: /\.(ogg)(\?\S*)?$/,
+                loader: 'file-loader',
+                query: {
+                    name: 'assets/ogg/[name].[ext]',
+                    publicPath: '../../'
+                }
             }
         ]
     },
