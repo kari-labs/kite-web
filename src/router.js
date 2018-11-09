@@ -10,7 +10,12 @@ export default new Router({
     {
         path: '/',
         name: 'listContainers',
-        component: () => import(/* webpackChunkName: "containerDashboard" */ './views/ContainerDashboard.vue')
+        component: () => import(/* webpackChunkName: "containerDashboard" */ '@/views/ContainerDashboard.vue')
+    },
+    {
+        path: '/container/:id',
+        name: 'manageContainer',
+        component: () => import(/* webpackChunkName: "containerManagement" */ '@/views/ContainerManagement.vue')
     }
   ]
 })
