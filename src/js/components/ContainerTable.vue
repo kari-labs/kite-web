@@ -22,6 +22,7 @@
                     <v-btn 
                         block
                         flat
+                        slot="activator"
                         :to="{ name: 'manageContainer', params: { id: props.item.Name }}"
                         color="primary">
                         {{ props.item.Name }}
@@ -142,8 +143,8 @@
                         })
                         console.log(parsedData)
 
-                        // Commit to Vuex store
-                        this.$store.commit('updateContainers', parsedData)
+                        // Commit to the Vuex Action
+                        this.$store.dispatch('updateContainersAsync', parsedData)
 
                         // Request has loaded successfully, disable loader bar
                         this.tableLoading = false

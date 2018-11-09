@@ -43,6 +43,9 @@ async function renderPage() {
                                 state.containers = payload
                             }
                         },
+                        actions: {
+                            updateContainersAsync: ({ commit }, payload) => commit('updateContainers', payload)
+                        },
                         getters: {
                             getContainerByOwner: (state) => (owner) => {
                                 return state.containers.find(container => container.Name === owner)
