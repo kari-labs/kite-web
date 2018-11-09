@@ -1,7 +1,7 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import VueRouter from 'vue-router'
 import Vuetify from 'vuetify'
-import Router from '@/App.vue'
+import App from '@/App.vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
@@ -23,7 +23,7 @@ describe('App', () => {
         localVue.use(VueRouter)
         localVue.use(Vuetify)
 
-        testBed = shallowMount(Router, {
+        testBed = shallowMount(App, {
             stubs: {
                 'neit-header': Header,
                 'neit-footer': Footer
