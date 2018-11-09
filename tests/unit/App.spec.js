@@ -1,4 +1,5 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
+//import VueKonami from 'vue-konami'
 import VueRouter from 'vue-router'
 import Vuetify from 'vuetify'
 import App from '@/App.vue'
@@ -20,6 +21,7 @@ describe('App', () => {
     beforeEach(() => {
         const localVue = createLocalVue()
         localVue.config.productionTip = false
+        //localVue.use(VueKonami)
         localVue.use(VueRouter)
         localVue.use(Vuetify)
 

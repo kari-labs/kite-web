@@ -15,6 +15,15 @@
       'neit-header': () => import(/* webpackChunkName: "initialLoad" */ '@/components/Header.vue'),
       'neit-footer': () => import(/* webpackChunkName: "initialLoad" */ '@/components/Footer.vue'),
       'super-secret': () => import(/* webpackChunkName: "initialLoad" */ '@/components/KonamiCredits.vue'),
-    }
+    },
+    data: () => ({
+      secretPlaying: false
+    }),
+    methods: {
+      test() {
+        this.secretPlaying = true
+      },
+      doVisChange() {}
+    },
   }
 </script>
