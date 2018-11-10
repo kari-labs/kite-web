@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header renders all elements correctly 1`] = `
+<div>
+  <aside
+    class="accent v-navigation-drawer v-navigation-drawer--clipped v-navigation-drawer--close v-navigation-drawer--fixed v-navigation-drawer--is-mobile theme--light"
+    style="height: 100%; margin-top: 0px; max-height: calc(100% - 0px); transform: translateX(-300px); width: 300px;"
+  >
+    <div
+      class="v-list pt-0 v-list--dense theme--light"
+    >
+      <div>
+        <a
+          class="v-list__tile v-list__tile--link theme--light"
+        >
+          <div
+            class="v-list__tile__action"
+          >
+            <i
+              aria-hidden="true"
+              class="v-icon material-icons theme--light"
+            >
+              dashboard
+            </i>
+          </div>
+           
+          <div
+            class="v-list__tile__content"
+          >
+            <div
+              class="v-list__tile__title"
+            >
+              Home
+            </div>
+          </div>
+        </a>
+      </div>
+      <div>
+        <a
+          class="v-list__tile v-list__tile--link theme--light"
+        >
+          <div
+            class="v-list__tile__action"
+          >
+            <i
+              aria-hidden="true"
+              class="v-icon material-icons theme--light"
+            >
+              bug_report
+            </i>
+          </div>
+           
+          <div
+            class="v-list__tile__content"
+          >
+            <div
+              class="v-list__tile__title"
+            >
+              Report Bug
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div
+      class="v-navigation-drawer__border"
+    />
+  </aside>
+   
+  <nav
+    class="v-toolbar v-toolbar--clipped v-toolbar--fixed theme--dark primary"
+    relative=""
+    style="margin-top: 0px; padding-right: 0px; padding-left: 0px; transform: translateY(0px);"
+  >
+    <div
+      class="v-toolbar__content"
+      style="height: 64px;"
+    >
+      <button
+        aria-label="Toggle side navigation drawer"
+        class="secondary-text v-toolbar__side-icon v-btn v-btn--icon theme--dark"
+        temporary=""
+        type="button"
+      >
+        <div
+          class="v-btn__content"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon material-icons theme--dark"
+          >
+            menu
+          </i>
+        </div>
+      </button>
+       
+      <div
+        class="v-toolbar__title secondary-text"
+      >
+        NEIT Kite
+      </div>
+       
+      <div
+        class="spacer"
+      />
+       
+      <div
+        class="v-toolbar__items hidden-sm-and-down"
+      >
+        <button
+          aria-label="Container Dashboard"
+          class="v-btn v-btn--flat theme--dark secondary--text"
+          slot="activator"
+          type="button"
+        >
+          <div
+            class="v-btn__content"
+          >
+            Container Dashboard
+          </div>
+        </button>
+         
+        <button
+          aria-label="Report a Bug"
+          class="v-btn v-btn--flat theme--dark secondary--text"
+          type="button"
+        >
+          <div
+            class="v-btn__content"
+          >
+            Report Bug
+          </div>
+        </button>
+      </div>
+    </div>
+  </nav>
+</div>
+`;
