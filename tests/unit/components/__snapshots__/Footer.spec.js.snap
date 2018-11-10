@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header should render social media links correctly 1`] = `
+<footer
+  class="v-footer v-footer--absolute v-footer--inset theme--light primary"
+  style="height: auto;"
+>
+  <div
+    class="text-xs-center v-card v-card--flat v-card--tile theme--light primary"
+  >
+    <div
+      class="v-card__text"
+    >
+      <button
+        aria-label="fab fa-twitch"
+        class="mx-3 secondary-text v-btn v-btn--icon theme--light"
+        type="button"
+      >
+        <div
+          class="v-btn__content"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon fab fa-twitch theme--light secondary--text"
+            style="font-size: 24px;"
+          />
+        </div>
+      </button>
+      <button
+        aria-label="fab fa-google-plus"
+        class="mx-3 secondary-text v-btn v-btn--icon theme--light"
+        type="button"
+      >
+        <div
+          class="v-btn__content"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon fab fa-google-plus theme--light secondary--text"
+            style="font-size: 24px;"
+          />
+        </div>
+      </button>
+      <button
+        aria-label="fab fa-steam"
+        class="mx-3 secondary-text v-btn v-btn--icon theme--light"
+        type="button"
+      >
+        <div
+          class="v-btn__content"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon fab fa-steam theme--light secondary--text"
+            style="font-size: 24px;"
+          />
+        </div>
+      </button>
+    </div>
+     
+    <div
+      class="v-card__text pt-0 secondary-text"
+    >
+      
+            Use of this system is limited to authorized persons of New England Institute of Technology.
+        
+    </div>
+     
+    <hr
+      class="v-divider theme--light"
+    />
+     
+    <div
+      class="v-card__text secondary-text"
+    >
+      
+            ©2018 — 
+      <strong>
+        Joseph Zurowski
+      </strong>
+       
+      <br />
+    </div>
+  </div>
+</footer>
+`;
