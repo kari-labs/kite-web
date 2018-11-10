@@ -1,16 +1,23 @@
-# package directories
+.DS_Store
 node_modules
-jspm_packages
+/dist
+.vs/
+coverage/
 
-# Serverless directories
-.serverless
+# local env files
+.env.local
+.env.*.local
 
-# VSCode directories
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
 .vscode
-
-# Jest Coverage Reports
-coverage
-
-dist
-
-stats.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*

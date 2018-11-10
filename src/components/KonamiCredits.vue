@@ -24,7 +24,7 @@
 </template>
 
 <script>
-require('../../ogg/credits.ogg')
+require('@/ogg/credits.ogg')
     export default {
         mounted() {
             this.$nextTick(() => {
@@ -62,7 +62,7 @@ require('../../ogg/credits.ogg')
                 if(this.audioContext.state === 'suspended') {
                     this.audioContext.resume()
                 } else {
-		            this.audioElement.play();
+                    this.audioElement.play();
                 }
             }
         }

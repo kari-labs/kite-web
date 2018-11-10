@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Router should render correctly 1`] = `
+exports[`App should render correctly 1`] = `
 <vapp-stub
   id="app"
 >
@@ -148,6 +148,8 @@ exports[`Router should render correctly 1`] = `
       name="default"
     />
   </vcontent-stub>
+   
+  <!---->
    
   <footer
     class="v-footer v-footer--absolute v-footer--inset theme--light primary"

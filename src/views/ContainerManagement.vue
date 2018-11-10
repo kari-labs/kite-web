@@ -66,11 +66,14 @@
     }
 </script>
 
-<style lang="stylus" scoped>
-    .secondary-accent
-        border-color rgba(252, 183, 65, 0.34) !important
-    .primary-accent
-        border-color rgba(24, 45, 114, 0.34) !important
-    .embolden
-        font-weight 600
+<style lang="scss" scoped>
+.secondary-accent {
+    border-color: rgba(252, 183, 65, 0.34) !important;
+}
+.primary-accent {
+    border-color: rgba(24, 45, 114, 0.34) !important;
+}
+.embolden {
+    font-weight: 600;
+}
 </style>

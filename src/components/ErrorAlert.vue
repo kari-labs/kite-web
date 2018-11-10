@@ -13,7 +13,8 @@
     }
 </script>
 
-<style lang="stylus" scoped>
-    .v-alert.error
-        margin-top 0px
+<style lang="scss" scoped>
+.v-alert.error {
+    margin-top: 0px;
+}
 </style>

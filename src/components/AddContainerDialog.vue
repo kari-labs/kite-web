@@ -51,7 +51,7 @@
                 if(this.$refs.form.validate()) {
                     this.loading = true
 
-                    return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
+                    return import(/* webpackChunkName: "mixins" */ '@/mixins/api.js').then(({ default: Kite }) => {
                         const headers = new Headers()
                         const init = {
                             method: 'POST',
@@ -84,7 +84,7 @@
             onProgressChange(val) {
                 this.loading = val
             },
-            onResponse(val) {}
+            onResponse() {}
         },
         data: () => ({
             studentID: '',
@@ -102,10 +102,10 @@
             ]
         }),
         components: {
-            'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ './ErrorAlert.vue'),
-            'error-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ './ErrorDialog.vue'),
-            'success-dialog': () => import(/* webpackChunkName: "dialogHelpers" */ './SuccessDialog.vue'),
-            'progress-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ './ProgressDialog.vue')
+            'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ '@/components/ErrorAlert.vue'),
+            'error-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/ErrorDialog.vue'),
+            'success-dialog': () => import(/* webpackChunkName: "dialogHelpers" */ '@/components/SuccessDialog.vue'),
+            'progress-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/ProgressDialog.vue')
         }
     }
 </script>
