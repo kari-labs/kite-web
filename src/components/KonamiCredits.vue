@@ -19,12 +19,12 @@
                 </v-layout>
             </v-container>
         </v-card>
-        <audio src="/assets/ogg/credits.ogg" type="audio/ogg"/>
+        <!-- See https://cli.vuejs.org/guide/html-and-static-assets.html#static-assets-handling -->
+        <audio src="/ogg/credits.ogg" type="audio/ogg"/>
     </v-dialog>
 </template>
 
 <script>
-require('@/ogg/credits.ogg')
     export default {
         mounted() {
             this.$nextTick(() => {
@@ -32,11 +32,13 @@ require('@/ogg/credits.ogg')
                 this.track = this.audioContext.createMediaElementSource(this.audioElement)
 
                 this.audioElement.addEventListener('ended', () => {
-                    console.log('Music stopped')
                     this.updateVisibility(false)
                 })
 
                 this.track.connect(this.audioContext.destination)
+
+                // For Hot Reload
+                if(this.visible) this.startPlayback()
             })
         },
         props: [
@@ -54,16 +56,25 @@ require('@/ogg/credits.ogg')
         methods: {
             updateVisibility(val) {
                 this.$emit('visChange', val)
-            }
-        },
-        watch: {
-            visible: function(val) {
-                if(!val) return
+            },
+            startPlayback() {
                 if(this.audioContext.state === 'suspended') {
                     this.audioContext.resume()
                 } else {
                     this.audioElement.play();
+                    console.log(this.audioContext.state)
                 }
+            }
+        },
+        watch: {
+            visible: function(val) {
+                if(!val) {
+                    // If for some reason the easter egg is dismissed
+                    // this will stop the audio
+                    if(this.audioContext.state === 'running') this.audioContext.suspend()
+                    return
+                }
+                this.startPlayback()
             }
         }
     }
