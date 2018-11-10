@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavDrawer should render drawer items correctly 1`] = `
+<aside
+  class="accent v-navigation-drawer v-navigation-drawer--clipped v-navigation-drawer--close v-navigation-drawer--fixed v-navigation-drawer--is-mobile theme--light"
+  style="height: 100%; margin-top: 0px; max-height: calc(100% - 0px); transform: translateX(-300px); width: 300px;"
+>
+  <div
+    class="v-list pt-0 v-list--dense theme--light"
+  >
+    <div>
+      <a
+        class="v-list__tile v-list__tile--link theme--light"
+      >
+        <div
+          class="v-list__tile__action"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon material-icons theme--light"
+          >
+            dashboard
+          </i>
+        </div>
+         
+        <div
+          class="v-list__tile__content"
+        >
+          <div
+            class="v-list__tile__title"
+          >
+            Foo
+          </div>
+        </div>
+      </a>
+    </div>
+    <div>
+      <a
+        class="v-list__tile v-list__tile--link theme--light"
+      >
+        <div
+          class="v-list__tile__action"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon material-icons theme--light"
+          >
+            bug_report
+          </i>
+        </div>
+         
+        <div
+          class="v-list__tile__content"
+        >
+          <div
+            class="v-list__tile__title"
+          >
+            Bar
+          </div>
+        </div>
+      </a>
+    </div>
+    <div>
+      <a
+        class="v-list__tile v-list__tile--link theme--light"
+      >
+        <div
+          class="v-list__tile__action"
+        >
+          <i
+            aria-hidden="true"
+            class="v-icon material-icons theme--light"
+          >
+            fooBar
+          </i>
+        </div>
+         
+        <div
+          class="v-list__tile__content"
+        >
+          <div
+            class="v-list__tile__title"
+          >
+            FooBar
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div
+    class="v-navigation-drawer__border"
+  />
+</aside>
+`;
