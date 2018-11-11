@@ -51,28 +51,16 @@
                 if(this.$refs.form.validate()) {
                     this.loading = true
 
-                    return import(/* webpackChunkName: "mixins" */ '@/mixins/api.js').then(({ default: Kite }) => {
-                        const headers = new Headers()
-                        const init = {
-                            method: 'POST',
-                            headers,
-                            mode: 'cors',
-                            cache: 'no-store'
+                    this.$containers.createContainer(this.studentID).then(async (response) => {
+                        console.log(await response.json())
+                        this.loading = false
+                        if(response.status === 500){
+                            this.responseError = true
+                        } else {
+                            this.responseOkay = true
+                            this.closeDialog()
+                            this.$emit('triggerRefresh')
                         }
-
-                        let request = new Request(`${Kite}api/docker/${this.studentID}`, init)
-
-                        fetch(request).then(async(response) => {
-                            console.log(await response.json())
-                            this.loading = false
-                            if(response.status === 500){
-                                this.responseError = true
-                            } else {
-                                this.responseOkay = true
-                                this.closeDialog()
-                                this.$emit('triggerRefresh')
-                            }
-                        })
                     })
                 }
             },

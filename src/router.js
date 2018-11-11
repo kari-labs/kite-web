@@ -16,6 +16,11 @@ export default new Router({
         path: '/container/:id',
         name: 'manageContainer',
         component: () => import(/* webpackChunkName: "containerManagement" */ '@/views/ContainerManagement.vue')
+    },
+    {
+        path: '/filemanager/:id/:path*',
+        name: 'fileManager',
+        component: () => import(/* webpackChunkName: "fileManager" */ '@/views/FileManager.vue')
     }
   ]
 })

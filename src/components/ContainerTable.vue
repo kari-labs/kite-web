@@ -116,39 +116,29 @@
         methods: {
             listContainers() {
                 this.tableLoading = true
-                return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
-                    const headers = new Headers()
-                    const init = {
-                        method: 'GET',
-                        headers,
-                        mode: 'cors',
-                        cache: 'no-store'
-                    }
-                    let request = new Request(`${Kite}api/docker`, init)
+                
+                this.$containers.getContainers().then(async(response) => {
+                    // Convert returned data to json
+                    return await response.json()
+                }).then((parsedData) => {
+                    parsedData.forEach((element, index) => {
+                        let name = element.Name
+                        let timeStart = element.State.StartedAt
+                        // Filter out the beginning '/' and the leading 'php'
+                        // Use the first result so we don't turn name into an array
+                        name = name.match(/\b\d+/)[0]
+                        timeStart = new Date(timeStart).toLocaleString()
 
-                    fetch(request).then(async(response) => {
-                        // Convert returned data to json
-                        return await response.json()
-                    }).then((parsedData) => {
-                        parsedData.forEach((element, index) => {
-                            let name = element.Name
-                            let timeStart = element.State.StartedAt
-                            // Filter out the beginning '/' and the leading 'php'
-                            // Use the first result so we don't turn name into an array
-                            name = name.match(/\b\d+/)[0]
-                            timeStart = new Date(timeStart).toLocaleString()
-
-                            parsedData[index].Name = name
-                            parsedData[index].State.StartedAt = timeStart
-                        })
-                        console.log(parsedData)
-
-                        // Commit to the Vuex Action
-                        this.$store.dispatch('updateContainersAsync', parsedData)
-
-                        // Request has loaded successfully, disable loader bar
-                        this.tableLoading = false
+                        parsedData[index].Name = name
+                        parsedData[index].State.StartedAt = timeStart
                     })
+                    console.log(parsedData)
+
+                    // Commit to the Vuex Action
+                    this.$store.dispatch('updateContainersAsync', parsedData)
+
+                    // Request has loaded successfully, disable loader bar
+                    this.tableLoading = false
                 })
             }
         }
