@@ -4,7 +4,7 @@ import Vuetify from 'vuetify'
 import router from '@/router'
 import Footer from '@/components/Footer.vue'
 
-describe('Header', () => {
+describe('Footer', () => {
     let wrapper
 
     beforeEach(() => {

@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorAlert should render alert correctly 1`] = `
+<div
+  class="v-alert error"
+>
+  <i
+    aria-hidden="true"
+    class="v-icon material-icons theme--light v-alert__icon"
+  >
+    warning
+  </i>
+  <div>
+    
+    foobar
+
+  </div>
+</div>
+`;
+
+exports[`ErrorAlert should render correctly when hidden 1`] = `
+<div
+  class="v-alert error"
+  style="display: none;"
+>
+  <i
+    aria-hidden="true"
+    class="v-icon material-icons theme--light v-alert__icon"
+  >
+    warning
+  </i>
+  <div>
+    
+    foo and also bar
+
+  </div>
+</div>
+`;

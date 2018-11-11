@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Header should render social media links correctly 1`] = `
+exports[`Footer should render social media links correctly 1`] = `
 <footer
   class="v-footer v-footer--absolute v-footer--inset theme--light primary"
   style="height: auto;"
