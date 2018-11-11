@@ -1,6 +1,6 @@
 {
   "name": "kite-web",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Front-end for managing Docker containers for New England Institute of Technology students and faculty",
   "main": "src/js/main.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "vuex"
   ],
   "author": "Joseph Zurowski",
-  "license": "MIT",
+  "license": "Creative Commons Attribution-NonCommercial 3.0 United States",
   "bugs": {
     "url": "https://github.com/neit-kite/kite-web/issues"
   },
