@@ -5,7 +5,7 @@ export default class Containers {
         this.api_url = config.api_url || '';
     }
 
-    async createCotainer(studentID) {
+    async createContainer(studentID) {
         return await fetch(`${this.api_url}api/docker/${studentID}`, {
             method: 'POST',
             mode: 'cors',
