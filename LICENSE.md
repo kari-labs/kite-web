@@ -1,8 +1,8 @@
-#The Neat License
+# The Neat License
 
-Copyright (c) <year> <copyright holders>
+Copyright (c) <2019> Joseph Zurowski, Kyle Gray, Matthew Conway, and Ian Fabricatore
 
-###Preface:
+### Preface:
 
 In the language of this license, the following terms and their respective definitions are as follows, hereonafter:
 
@@ -12,7 +12,7 @@ In the language of this license, the following terms and their respective defini
 
  - (c) the Person, People, Entity, Entities, or Group from which the Software originated, via their contrivance shall be reffered to as the "Owners".
 
-###License:
+### License:
 
 Permission is hereby granted, at a cost agreed-upon beforehand between You and the Owners of the Software, to You, to deal in the Software, including without limitation the rights to use, copy, modify, publish, distribute, and/or sell the Software provided that You have inquired for and recieved explicit and written permission from the Owners to do so, and to permit You to do so, subject to the following conditions:
 
