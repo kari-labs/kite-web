@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/neit-kite/kite-web.svg?branch=unit-tests)](https://travis-ci.org/neit-kite/kite-web)
