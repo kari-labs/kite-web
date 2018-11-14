@@ -26,17 +26,19 @@
             }
         },
         components: {
-            'nav-drawer': () => import(/* webpackChunkName: "navDrawer" */ './NavDrawer.vue')
+            'nav-drawer': () => import(/* webpackChunkName: "navDrawer" */ '@/components/NavDrawer.vue')
         }
     }
 </script>
 
-<style lang="stylus" scoped>
-    //Fixes bug where Vuetify secondary changes color of background but not text
-    .v-toolbar__side-icon.secondary-text
-        color: #FCB741 !important
+<style lang="scss" scoped>
+//Fixes bug where Vuetify secondary changes color of background but not text
+.v-toolbar__side-icon.secondary-text {
+    color: #FCB741 !important;
+}
 
-    //Disables ability to select toolbar title text
-    .v-toolbar__title
-        user-select: none
+//Disables ability to select toolbar title text
+.v-toolbar__title {
+    user-select: none;
+}
 </style>

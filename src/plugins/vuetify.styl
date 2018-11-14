@@ -1,10 +1,14 @@
 @import '~vuetify/src/stylus/main'
 
 .secondary-text
-    color #FCB741
+    color #FCB741 !important
 
 .primary
     color #182D72
+
+// Alias for .primary
+.primary-text
+    @extend .primary
 
 .v-footer .v-card
     width inherit
