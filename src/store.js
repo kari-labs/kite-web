@@ -13,8 +13,11 @@ export default new Vuex.Store({
       updateContainers(state, containerList) {
           state.containers = containerList
       },
-      setCurrentContainer(state, id) {
-          state.containers = id
+      setCurrentContainer(state, containerID) {
+          state.containers = containerID
+      },
+      appendContainer(state, containerObject) {
+          state.containers.push(containerObject)
       }
   },
   actions: {
@@ -30,14 +33,14 @@ export default new Vuex.Store({
             
             let request = new Request(`${Kite}api/docker`, init)
 
-            fetch(request).then((response) => {
+            fetch(request).then(response => {
                 // Check if response is okay and return data in JSON if true
                 if(response.ok) return response.json()
                 // If response not okay, reject the Promise with HTTP Status Code
                 else reject(response.status)
             // This is where we filter some of the input out for better results
             // on the frontend
-            }).then((parsedData) => {
+            }).then(parsedData => {
                 // Perform data filtering on the JSON data
                 parsedData.forEach((element, elementIndex) => {
                     let containerName = element.Name
@@ -59,7 +62,7 @@ export default new Vuex.Store({
 
                 // Return new parsedData to next Promise
                 return parsedData
-            }).then((filteredData) => {
+            }).then(filteredData => {
                 // Commit to mutation
                 commit('updateContainers', filteredData)
 
@@ -67,6 +70,30 @@ export default new Vuex.Store({
                 resolve()
             // Catch any errors while retrieving API data
             // such as an inability to connect to the server
+            }).catch(error => reject(error))
+        })
+    },
+    // Get a container object from the API then append it to
+    // the containers array mutation.
+    getSingleContainerAsync: ({commit}, containerID) => {
+        return new Promise((resolve, reject) => {
+            const headers = new Headers()
+            const init = {
+                method: 'GET',
+                headers,
+                mode: 'cors',
+                cache: 'no-store'
+            }
+
+            let request = new Request(`${Kite}api/docker/${containerID}`, init)
+
+            fetch(request).then(response => {
+                if(response.ok) return response.json()
+                else reject(response.status)
+            }).then(parsedData => {
+                console.log(parsedData)
+                commit('appendContainer', parsedData)
+                resolve()
             }).catch(error => reject(error))
         })
     }
