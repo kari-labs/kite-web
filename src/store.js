@@ -4,6 +4,26 @@ import Kite from '@/mixins/api'
 
 Vue.use(Vuex)
 
+function filterContainer(data) {
+    let containerName = data.Name
+    let containerStartTime = data.State.StartedAt
+
+    // Filter out the junk Docker puts with the container name
+    // We are filtering out the prefixed '/' and the postfixed 'php'
+    // Use the first Regex result as we are evaluating each element separately
+    containerName = containerName.match(/\b\d+/)[0]
+    
+    // Convert the Container Start Time from a UTC date string to a
+    // Localized JavaScript Date object string
+    containerStartTime = new Date(containerStartTime).toLocaleString()
+
+    // Overwrite the parsedData with out new filtered data then repeat
+    data.Name = containerName
+    data.State.StartedAt = containerStartTime
+
+    return data
+}
+
 export default new Vuex.Store({
   state: {
     currentContainer: '',
@@ -41,24 +61,8 @@ export default new Vuex.Store({
             // This is where we filter some of the input out for better results
             // on the frontend
             }).then(parsedData => {
-                // Perform data filtering on the JSON data
-                parsedData.forEach((element, elementIndex) => {
-                    let containerName = element.Name
-                    let containerStartTime = element.State.StartedAt
-
-                    // Filter out the junk Docker puts with the container name
-                    // We are filtering out the prefixed '/' and the postfixed 'php'
-                    // Use the first Regex result as we are evaluating each element separately
-                    containerName = containerName.match(/\b\d+/)[0]
-                    
-                    // Convert the Container Start Time from a UTC date string to a
-                    // Localized JavaScript Date object string
-                    containerStartTime = new Date(containerStartTime).toLocaleString()
-
-                    // Overwrite the parsedData with out new filtered data then repeat
-                    parsedData[elementIndex].Name = containerName
-                    parsedData[elementIndex].State.StartedAt = containerStartTime
-                })
+                // Pass each object element to our filtering function
+                parsedData.forEach((element, elementIndex) => parsedData[elementIndex] = filterContainer(element))
 
                 // Return new parsedData to next Promise
                 return parsedData
@@ -93,23 +97,7 @@ export default new Vuex.Store({
             }).then(parsedData => {
                 console.log(parsedData)
 
-                let containerName = parsedData.Name
-                let containerStartTime = parsedData.State.StartedAt
-
-                // Filter out the junk Docker puts with the container name
-                // We are filtering out the prefixed '/' and the postfixed 'php'
-                // Use the first Regex result as we are evaluating each element separately
-                containerName = containerName.match(/\b\d+/)[0]
-                
-                // Convert the Container Start Time from a UTC date string to a
-                // Localized JavaScript Date object string
-                containerStartTime = new Date(containerStartTime).toLocaleString()
-
-                // Overwrite the parsedData with out new filtered data then repeat
-                parsedData.Name = containerName
-                parsedData.State.StartedAt = containerStartTime
-
-                return parsedData
+                return filterContainer(parsedData)
             }).then(filteredData => {
                 commit('appendContainer', filteredData)
                 resolve()
