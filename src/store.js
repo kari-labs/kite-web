@@ -95,8 +95,7 @@ export default new Vuex.Store({
                 if(response.ok) return response.json()
                 else reject(response.status)
             }).then(parsedData => {
-                console.log(parsedData)
-
+                // Filter the container object
                 return filterContainer(parsedData)
             }).then(filteredData => {
                 commit('appendContainer', filteredData)
