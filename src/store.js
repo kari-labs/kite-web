@@ -92,7 +92,60 @@ export default new Vuex.Store({
                 else reject(response.status)
             }).then(parsedData => {
                 console.log(parsedData)
-                commit('appendContainer', parsedData)
+
+                let containerName = parsedData.Name
+                let containerStartTime = parsedData.State.StartedAt
+
+                // Filter out the junk Docker puts with the container name
+                // We are filtering out the prefixed '/' and the postfixed 'php'
+                // Use the first Regex result as we are evaluating each element separately
+                containerName = containerName.match(/\b\d+/)[0]
+                
+                // Convert the Container Start Time from a UTC date string to a
+                // Localized JavaScript Date object string
+                containerStartTime = new Date(containerStartTime).toLocaleString()
+
+                // Overwrite the parsedData with out new filtered data then repeat
+                parsedData.Name = containerName
+                parsedData.State.StartedAt = containerStartTime
+
+                return parsedData
+            }).then(filteredData => {
+                commit('appendContainer', filteredData)
+                resolve()
+            }).catch(error => reject(error))
+        })
+    },
+    // Add a new container to the API, then call
+    // getSingleContainerAsync to add the new container
+    // object to the VueX store
+    addNewContainerAsync: ({dispatch}, containerID) => {
+        return new Promise((resolve, reject) => {
+            // We start by writing our POST request to the API
+            const headers = new Headers()
+            const init = {
+                method: 'POST',
+                headers,
+                mode: 'cors',
+                cache: 'no-store'
+            }
+
+            let request = new Request(`${Kite}api/docker/${containerID}`, init)
+
+            // Perform HTTP Request
+            fetch(request).then(response => {
+                if(response.ok) {
+                    console.log(response.json())
+                    return
+                }
+                // Do not continue if the API reports an error
+                else throw new Error(response.status)
+            }).then(() => {
+                // Get the docker API data for the newly created container
+                // and add it to the current container list
+                return dispatch('getSingleContainerAsync', containerID)
+            }).then(() => {
+                // Once dispatch completes, resolve the Promise
                 resolve()
             }).catch(error => reject(error))
         })
