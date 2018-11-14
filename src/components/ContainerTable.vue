@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
     export default {
         components: {
             'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ './AddContainerDialog.vue'),
@@ -73,10 +74,14 @@
             // Only runs when the template is fully rendered
             this.$nextTick(() => {
                 // Auto refreshes the page every 60 seconds
-                this.listContainers()
-                this.timer = setInterval(() => {
-                    this.listContainers()
-                }, 60000)
+                this.updateContainersAsync().then(() => {
+                    this.tableLoading = false
+                    this.timer = setInterval(() => {
+                        this.listContainers()
+                    }, 60000)
+                }).catch((error) => {
+                    console.error(`ListContainers Promise Rejection: ${error}`)
+                })
             })
         },
         beforeDestroy() {
@@ -114,41 +119,13 @@
             }
         },
         methods: {
+            ...mapActions(['updateContainersAsync']),
             listContainers() {
                 this.tableLoading = true
-                return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
-                    const headers = new Headers()
-                    const init = {
-                        method: 'GET',
-                        headers,
-                        mode: 'cors',
-                        cache: 'no-store'
-                    }
-                    let request = new Request(`${Kite}api/docker`, init)
-
-                    fetch(request).then(async(response) => {
-                        // Convert returned data to json
-                        return await response.json()
-                    }).then((parsedData) => {
-                        parsedData.forEach((element, index) => {
-                            let name = element.Name
-                            let timeStart = element.State.StartedAt
-                            // Filter out the beginning '/' and the leading 'php'
-                            // Use the first result so we don't turn name into an array
-                            name = name.match(/\b\d+/)[0]
-                            timeStart = new Date(timeStart).toLocaleString()
-
-                            parsedData[index].Name = name
-                            parsedData[index].State.StartedAt = timeStart
-                        })
-                        console.log(parsedData)
-
-                        // Commit to the Vuex Action
-                        this.$store.dispatch('updateContainersAsync', parsedData)
-
-                        // Request has loaded successfully, disable loader bar
-                        this.tableLoading = false
-                    })
+                this.updateContainersAsync().then(() => {
+                    this.tableLoading = false
+                }).catch((error) => {
+                    console.error(`ListContainers Promise Rejection: ${error}`)
                 })
             }
         }
