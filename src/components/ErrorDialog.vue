@@ -5,11 +5,11 @@
         width="380">
         <v-card color="red" dark>
             <v-card-title>
-                <span class="headline">Error</span>
+                <span class="headline">{{ title }}</span>
             </v-card-title>
             <v-divider/>
             <v-card-text>
-                There was a server error while processing your request.
+                {{ message }}
             </v-card-text>
             <v-divider/>
             <v-card-actions>
@@ -31,11 +31,35 @@ import { mapGetters, mapMutations } from 'vuex'
                 set(value) {
                     this.setErrorVisibility(value)
                 }
+            },
+            message: {
+                get() {
+                    return this.getErrorText()
+                },
+                set(message) {
+                    this.setErrorText(message)
+                }
+            },
+            title: {
+                get() {
+                    return this.getErrorTitle()
+                },
+                set(value) {
+                    this.setErrorTitle()
+                }
             }
         },
         methods: {
-            ...mapGetters(['getErrorVisibility']),
-            ...mapMutations(['setErrorVisibility'])
+            ...mapGetters([
+                'getErrorVisibility',
+                'getErrorText',
+                'getErrorTitle'
+            ]),
+            ...mapMutations([
+                'setErrorVisibility',
+                'setErrorText',
+                'setErrorTitle'
+            ])
         }
     }
 </script>

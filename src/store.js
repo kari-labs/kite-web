@@ -36,7 +36,8 @@ export default new Vuex.Store({
     containers: [],
     errorDialog: {
         visible: false,
-        text: ''
+        text: '',
+        title: ''
     },
     successDialog: {
         visible: false,
@@ -56,6 +57,12 @@ export default new Vuex.Store({
       },
       setErrorVisibility(state, value) {
           state.errorDialog.visible = value
+      },
+      setErrorText(state, message) {
+          state.errorDialog.text = message
+      },
+      setErrorTitle(state, value) {
+          state.errorDialog.title = value
       }
   },
   actions: {
@@ -158,6 +165,8 @@ export default new Vuex.Store({
           return state.containers.find(container => container.Name === owner)
       },
       getAllContainers: state => { return state.containers },
-      getErrorVisibility: state => { return state.errorDialog.visible }
+      getErrorVisibility: state => { return state.errorDialog.visible },
+      getErrorText: state => { return state.errorDialog.text },
+      getErrorTitle: state => { return state.errorDialog.title }
   }
 })

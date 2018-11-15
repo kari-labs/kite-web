@@ -56,7 +56,11 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
         methods: {
             ...mapActions(['addNewContainerAsync']),
             ...mapGetters(['getErrorVisibility']),
-            ...mapMutations(['setErrorVisibility']),
+            ...mapMutations([
+                'setErrorVisibility',
+                'setErrorText',
+                'setErrorTitle'
+            ]),
             // Sends a POST request to create a container with
             // the given student ID
             createContainer() {
@@ -67,8 +71,8 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
                         this.closeDialog()
                         this.loading = false
                     }).catch(error => {
+                        this.showIncompleteError()
                         this.loading = false
-                        this.errorVisibility = true
                     })
                 }
             },
@@ -79,6 +83,11 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
             },
             onProgressChange(val) {
                 this.loading = val
+            },
+            showIncompleteError() {
+                this.setErrorTitle('Request Incomplete')
+                this.setErrorText('The action you just tried to perform did not complete. The KITE service may be unavailable. Please try your request again in a few minutes.')
+                this.errorVisibility = true
             },
             onResponse() {}
         },

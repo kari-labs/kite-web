@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
     export default {
         components: {
             'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ '@/components/AddContainerDialog.vue'),
@@ -79,8 +79,8 @@ import { mapActions, mapGetters } from 'vuex'
                     this.timer = setInterval(() => {
                         this.listContainers()
                     }, 60000)
-                }).catch((error) => {
-                    console.error(`ListContainers Promise Rejection: ${error}`)
+                }).catch(error => {
+                    this.showOfflineError()
                 })
             })
         },
@@ -118,13 +118,29 @@ import { mapActions, mapGetters } from 'vuex'
         },
         methods: {
             ...mapActions(['updateContainersAsync']),
+            ...mapMutations([
+                'setErrorText',
+                'setErrorTitle',
+                'setErrorVisibility'
+            ]),
             listContainers() {
                 this.tableLoading = true
                 this.updateContainersAsync().then(() => {
                     this.tableLoading = false
-                }).catch((error) => {
-                    console.error(`ListContainers Promise Rejection: ${error}`)
+                }).catch(error => {
+                    this.showOfflineError()
                 })
+            },
+            showOfflineError() {
+                this.setErrorTitle('KITE Unavailable')
+                this.setErrorText('The KITE service is currently experiencing technical difficulties. Please try again in a few minutes.')
+                this.setErrorVisibility(true)
+
+                // Set the data table to finished loading
+                this.tableLoading = false
+
+                // Destroy timer since the API is offline
+                clearInterval(this.timer)
             }
         }
     }

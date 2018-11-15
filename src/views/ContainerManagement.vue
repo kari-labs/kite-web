@@ -44,22 +44,40 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
     export default {
         mounted() {
             this.$nextTick(() => {
                 if(!this.getContainerByOwner(this.$route.params.id)) {
                     this.getSingleContainerAsync(this.$route.params.id).then(() => {
                         this.container = this.getContainerByOwner(this.$route.params.id)
+                    }).catch(error => {
+                        console.error(error)
+                        this.showOfflineError()
                     })
-                } else this.container = this.getContainerByOwner(this.$route.params.id)
+                } else {
+                    this.container = this.getContainerByOwner(this.$route.params.id).catch(error => {
+                        console.error(error)
+                        this.showOfflineError()
+                    })
+                }
             })
         },
         data: () => ({
             container: null
         }),
         methods: {
-            ...mapActions(['getSingleContainerAsync'])
+            ...mapActions(['getSingleContainerAsync']),
+            ...mapMutations([
+                'setErrorText',
+                'setErrorTitle',
+                'setErrorVisibility'
+            ]),
+            showOfflineError() {
+                this.setErrorTitle('KITE Unavailable')
+                this.setErrorText('The KITE service is currently experiencing technical difficulties. Please try again in a few minutes.')
+                this.setErrorVisibility(true)
+            }
         },
         computed: {
             ...mapGetters(['getContainerByOwner']),
