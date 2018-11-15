@@ -1,6 +1,6 @@
 <template>
     <v-dialog
-        v-model="visible"
+        v-model="visibility"
         persistent
         width="380">
         <v-card color="red" dark>
@@ -14,25 +14,28 @@
             <v-divider/>
             <v-card-actions>
                 <v-spacer/>
-                <v-btn color="white" flat @click.native="closeDialog">Okay</v-btn>
+                <v-btn color="white" flat @click.native="visibility = false">Okay</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
     export default {
-        props: [
-            'visible'
-        ],
-        methods: {
-            closeDialog() {
-                this.$emit('closeDialog', false)
+        computed: {
+            visibility: {
+                get() {
+                    return this.getErrorVisibility()
+                },
+                set(value) {
+                    this.setErrorVisibility(value)
+                }
             }
         },
-        model: {
-            prop: 'visible',
-            event: 'closeDialog'
+        methods: {
+            ...mapGetters(['getErrorVisibility']),
+            ...mapMutations(['setErrorVisibility'])
         }
     }
 </script>

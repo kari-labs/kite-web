@@ -16,7 +16,7 @@
                                     <v-text-field 
                                         v-model="newContainerID"
                                         :rules="idRules"
-                                        :disabled="loading || responseError"
+                                        :disabled="loading || errorVisibility"
                                         label="Student ID"
                                         required/>
                                 </v-form>
@@ -27,25 +27,36 @@
                 <v-divider/>
                 <v-card-actions>
                     <v-spacer/>
-                    <v-btn color="primary" flat :disabled="loading || responseError" @click.native="closeDialog">Cancel</v-btn>
-                    <v-btn color="primary" flat :disabled="!formValid || loading || responseError" @click.native="createContainer">Create</v-btn>
+                    <v-btn color="primary" flat :disabled="loading || errorVisibility" @click.native="closeDialog">Cancel</v-btn>
+                    <v-btn color="primary" flat :disabled="!formValid || loading || errorVisibility" @click.native="createContainer">Create</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <progress-dialog v-model="loading" @visChange="onProgressChange"/>
-        <error-dialog v-model="responseError" @closeDialog="onResponse"/>
         <success-dialog v-model="responseOkay" @closeDialog="onResponse"/>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
     export default {
         model: {
             event: 'triggerRefresh'
         },
+        computed: {
+            errorVisibility: {
+                get() {
+                    return this.getErrorVisibility()
+                },
+                set(value) {
+                    this.setErrorVisibility(value)
+                }
+            }
+        },
         methods: {
             ...mapActions(['addNewContainerAsync']),
+            ...mapGetters(['getErrorVisibility']),
+            ...mapMutations(['setErrorVisibility']),
             // Sends a POST request to create a container with
             // the given student ID
             createContainer() {
@@ -57,7 +68,7 @@ import { mapActions } from 'vuex'
                         this.loading = false
                     }).catch(error => {
                         this.loading = false
-                        this.responseError = true
+                        this.errorVisibility = true
                     })
                 }
             },
@@ -75,7 +86,6 @@ import { mapActions } from 'vuex'
             newContainerID: '',
             showDialog: false,
             loading: false,
-            responseError: false,
             responseOkay: false,
             formValid: true,
             idRules: [
@@ -88,7 +98,6 @@ import { mapActions } from 'vuex'
         }),
         components: {
             'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ '@/components/ErrorAlert.vue'),
-            'error-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/ErrorDialog.vue'),
             'success-dialog': () => import(/* webpackChunkName: "dialogHelpers" */ '@/components/SuccessDialog.vue'),
             'progress-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/ProgressDialog.vue')
         }

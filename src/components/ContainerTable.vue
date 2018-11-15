@@ -9,7 +9,7 @@
         </v-toolbar>
         <v-data-table 
             :headers="headers"
-            :items="availableContainers"
+            :items="getAllContainers"
             :loading="tableLoading"
             prev-icon="keyboard_arrow_left"
             next-icon="keyboard_arrow_right"
@@ -64,11 +64,11 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
     export default {
         components: {
-            'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ './AddContainerDialog.vue'),
-            'error-alert': () => import(/* webpackChunkName: "alertHelpers" */ './ErrorAlert.vue')
+            'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ '@/components/AddContainerDialog.vue'),
+            'error-alert': () => import(/* webpackChunkName: "alertHelpers" */ '@/components/ErrorAlert.vue')
         },
         mounted() {
             // Only runs when the template is fully rendered
@@ -114,9 +114,7 @@ import { mapActions } from 'vuex'
             ]
         }),
         computed: {
-            availableContainers() {
-                return this.$store.getters.getAllContainers
-            }
+            ...mapGetters(['getAllContainers'])
         },
         methods: {
             ...mapActions(['updateContainersAsync']),

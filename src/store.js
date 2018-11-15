@@ -4,6 +4,13 @@ import Kite from '@/mixins/api'
 
 Vue.use(Vuex)
 
+/**
+ * @author Joseph Zurowski
+ * @description Filters the data returned by the Docker API
+ * @public
+ * @param {DockerContainer} data
+ * @returns {FilteredDockerContainer}
+ */
 function filterContainer(data) {
     let containerName = data.Name
     let containerStartTime = data.State.StartedAt
@@ -26,8 +33,16 @@ function filterContainer(data) {
 
 export default new Vuex.Store({
   state: {
-    currentContainer: '',
-    containers: []
+    containers: [],
+    errorDialog: {
+        visible: false,
+        text: ''
+    },
+    successDialog: {
+        visible: false,
+        text: ''
+    },
+    progressDialogVisible: false
   },
   mutations: {
       updateContainers(state, containerList) {
@@ -38,6 +53,9 @@ export default new Vuex.Store({
       },
       appendContainer(state, containerObject) {
           state.containers.push(containerObject)
+      },
+      setErrorVisibility(state, value) {
+          state.errorDialog.visible = value
       }
   },
   actions: {
@@ -121,10 +139,7 @@ export default new Vuex.Store({
 
             // Perform HTTP Request
             fetch(request).then(response => {
-                if(response.ok) {
-                    console.log(response.json())
-                    return
-                }
+                if(response.ok) return
                 // Do not continue if the API reports an error
                 else throw new Error(response.status)
             }).then(() => {
@@ -139,14 +154,10 @@ export default new Vuex.Store({
     }
   },
   getters: {
-      currentContainer: (state) => {
-        return state.containers.find(container => container.Name === state.currentContainerId)
-      },
-      getContainerByOwner: (state) => (owner) => {
+      getContainerByOwner: state => owner => {
           return state.containers.find(container => container.Name === owner)
       },
-      getAllContainers: state => {
-          return state.containers
-      }
+      getAllContainers: state => { return state.containers },
+      getErrorVisibility: state => { return state.errorDialog.visible }
   }
 })
