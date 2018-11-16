@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
     export default {
         components: {
             'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ '@/components/AddContainerDialog.vue'),
@@ -117,11 +117,9 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
             ...mapGetters(['getAllContainers'])
         },
         methods: {
-            ...mapActions(['updateContainersAsync']),
-            ...mapMutations([
-                'setErrorText',
-                'setErrorTitle',
-                'setErrorVisibility'
+            ...mapActions([
+                'updateContainersAsync',
+                'showPersistentDialog'
             ]),
             listContainers() {
                 this.tableLoading = true
@@ -132,9 +130,12 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
                 })
             },
             showOfflineError() {
-                this.setErrorTitle('KITE Unavailable')
-                this.setErrorText('The KITE service is currently experiencing technical difficulties. Please try again in a few minutes.')
-                this.setErrorVisibility(true)
+                this.showPersistentDialog({
+                    dialogType: 'error',
+                    color: null,
+                    title: 'Kite Unavailable',
+                    message: 'The KITE service is currently experiencing technical difficulties. Please try again in a few minutes.'
+                })
 
                 // Set the data table to finished loading
                 this.tableLoading = false

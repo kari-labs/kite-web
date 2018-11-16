@@ -34,14 +34,32 @@ function filterContainer(data) {
 export default new Vuex.Store({
   state: {
     containers: [],
-    errorDialog: {
-        visible: false,
-        text: '',
-        title: ''
+    // dialogTypes is read-only
+    dialogTypes: {
+        'error': {
+            color: 'red',
+            defaultTitle: 'Error',
+            defaultText: 'Some sort of error occurred. If you are a developer, submit an issue to our GitHub repository.'
+        },
+        'success': {
+            color: 'green darken-3',
+            defaultTitle: 'Success',
+            defaultText: 'The operation completed successfully.'
+        },
+        'uninitialized': {
+            color: 'gray darken-2',
+            defaultTitle: 'Placeholder',
+            defaultText: 'This dialog was shown without any data. If you are a developer, submit an issue to our GitHub repository.'
+        }
     },
-    successDialog: {
+    // dialog is read/write and is used to look up
+    // the default values of its respective dialogType
+    dialog: {
+        type: 'uninitialized',
         visible: false,
-        text: ''
+        color: null,
+        title: null,
+        text: null
     },
     progressDialogVisible: false
   },
@@ -55,14 +73,20 @@ export default new Vuex.Store({
       appendContainer(state, containerObject) {
           state.containers.push(containerObject)
       },
-      setErrorVisibility(state, value) {
-          state.errorDialog.visible = value
+      setDialogType(state, value) {
+          state.dialog.type = value
       },
-      setErrorText(state, message) {
-          state.errorDialog.text = message
+      setDialogVisibility(state, value) {
+          state.dialog.visible = value
       },
-      setErrorTitle(state, value) {
-          state.errorDialog.title = value
+      setDialogColor(state, value) {
+          state.dialog.color = value
+      },
+      setDialogTitle(state, value) {
+          state.dialog.title = value
+      },
+      setDialogText(state, message) {
+          state.dialog.text = message
       }
   },
   actions: {
@@ -118,7 +142,7 @@ export default new Vuex.Store({
 
             fetch(request).then(response => {
                 if(response.ok) return response.json()
-                else reject(response.status)
+                else throw new Error(response.status)
             }).then(parsedData => {
                 // Filter the container object
                 return filterContainer(parsedData)
@@ -158,6 +182,13 @@ export default new Vuex.Store({
                 resolve()
             }).catch(error => reject(error))
         })
+    },
+    showPersistentDialog: ({commit}, {dialogType, color, title, message}) => {
+        commit('setDialogType', dialogType)
+        commit('setDialogColor', color)
+        commit('setDialogTitle', title)
+        commit('setDialogText', message)
+        commit('setDialogVisibility', true)
     }
   },
   getters: {
@@ -165,8 +196,18 @@ export default new Vuex.Store({
           return state.containers.find(container => container.Name === owner)
       },
       getAllContainers: state => { return state.containers },
-      getErrorVisibility: state => { return state.errorDialog.visible },
-      getErrorText: state => { return state.errorDialog.text },
-      getErrorTitle: state => { return state.errorDialog.title }
+      getDialogDefaults: state => { return state.dialogTypes[state.dialog.type] },
+      getDialogVisibility: state => {
+          return state.dialog.visible
+      },
+      getDialogColor: state => {
+          return state.dialog.color || state.dialogTypes[state.dialog.type].color
+      },
+      getDialogTitle: state => {
+          return state.dialog.title || state.dialogTypes[state.dialog.type].defaultTitle
+      },
+      getDialogText: state => {
+          return state.dialog.text || state.dialogTypes[state.dialog.type].defaultText
+      }
   }
 })

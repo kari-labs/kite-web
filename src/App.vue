@@ -5,19 +5,18 @@
         <router-view/>
     </v-content>
     <super-secret v-model="secretPlaying" @visChange="doVisChange"/>
-    <error-dialog/>
+    <persistent-dialog/>
     <neit-footer/>
   </v-app>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
   export default {
     components: {
       'neit-header': () => import(/* webpackChunkName: "initialLoad" */ '@/components/Header.vue'),
       'neit-footer': () => import(/* webpackChunkName: "initialLoad" */ '@/components/Footer.vue'),
-      'error-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/ErrorDialog.vue'),
-      'super-secret': () => import(/* webpackChunkName: "initialLoad", webpackPrefetch: true */ '@/components/KonamiCredits.vue'),
+      'persistent-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/PersistentDialog.vue'),
+      'super-secret': () => import(/* webpackChunkName: "initialLoad", webpackPrefetch: true */ '@/components/KonamiCredits.vue')
     },
     data: () => ({
       secretPlaying: false
@@ -27,6 +26,6 @@ import { mapActions, mapGetters } from 'vuex'
         this.secretPlaying = true
       },
       doVisChange() {}
-    },
+    }
   }
 </script>
