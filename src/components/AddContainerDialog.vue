@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-dialog v-model="showDialog" persistent lazy max-width="500px">
+        <v-dialog v-model="visible" persistent lazy max-width="500px">
             <v-btn class="mb-2" slot="activator" color="primary" dark>New Container</v-btn>
             <v-card>
                 <v-card-title>
@@ -16,7 +16,7 @@
                                     <v-text-field 
                                         v-model="newContainerID"
                                         :rules="idRules"
-                                        :disabled="loading || errorVisibility"
+                                        :disabled="loading || dialogVisibility"
                                         label="Student ID"
                                         required/>
                                 </v-form>
@@ -27,8 +27,8 @@
                 <v-divider/>
                 <v-card-actions>
                     <v-spacer/>
-                    <v-btn color="primary" flat :disabled="loading || errorVisibility" @click.native="closeDialog">Cancel</v-btn>
-                    <v-btn color="primary" flat :disabled="!formValid || loading || errorVisibility" @click.native="createContainer">Create</v-btn>
+                    <v-btn color="primary" flat :disabled="loading || dialogVisibility" @click.native="closeDialog">Cancel</v-btn>
+                    <v-btn color="primary" flat :disabled="!formValid || loading || dialogVisibility" @click.native="createContainer">Create</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -44,56 +44,54 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
             event: 'triggerRefresh'
         },
         computed: {
-            errorVisibility: {
+            dialogVisibility: {
                 get() {
-                    return this.getErrorVisibility()
-                },
-                set(value) {
-                    this.setErrorVisibility(value)
+                    return this.getDialogVisibility()
                 }
             }
         },
         methods: {
-            ...mapActions(['addNewContainerAsync']),
-            ...mapGetters(['getErrorVisibility']),
-            ...mapMutations([
-                'setErrorVisibility',
-                'setErrorText',
-                'setErrorTitle'
+            ...mapActions([
+                'addNewContainerAsync',
+                'showPersistentDialog'
             ]),
+            ...mapGetters(['getDialogVisibility']),
             // Sends a POST request to create a container with
             // the given student ID
             createContainer() {
                 if(this.$refs.form.validate()) {
                     this.loading = true
                     this.addNewContainerAsync(this.newContainerID).then(() => {
-                        this.responseOkay = true
+                        this.showPersistentDialog({
+                            dialogType: 'success',
+                            title: 'Container Added',
+                            message: 'The container was added successfully.'
+                        })
                         this.closeDialog()
                         this.loading = false
                     }).catch(error => {
-                        this.showIncompleteError()
+                        this.showPersistentDialog({
+                            dialogType: 'error',
+                            title: 'Request Incomplete',
+                            message: 'The action you just tried to perform did not complete. The KITE service may be unavailable. Please try your request again in a few minutes.'
+                        })
                         this.loading = false
                     })
                 }
             },
             // Closes the dialog and resets the form
             closeDialog() {
-                this.showDialog = false
+                this.visible = false
                 this.$refs.form.reset()
             },
             onProgressChange(val) {
                 this.loading = val
             },
-            showIncompleteError() {
-                this.setErrorTitle('Request Incomplete')
-                this.setErrorText('The action you just tried to perform did not complete. The KITE service may be unavailable. Please try your request again in a few minutes.')
-                this.errorVisibility = true
-            },
             onResponse() {}
         },
         data: () => ({
             newContainerID: '',
-            showDialog: false,
+            visible: false,
             loading: false,
             responseOkay: false,
             formValid: true,

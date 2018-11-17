@@ -1,2 +1,2 @@
-const baseRoute = 'https://kite.neit.icu/'
+const baseRoute = 'https://localhost/'
 export { baseRoute as default }

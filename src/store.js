@@ -34,6 +34,7 @@ function filterContainer(data) {
 export default new Vuex.Store({
   state: {
     containers: [],
+    currentContainer: null,
     // dialogTypes is read-only
     dialogTypes: {
         'error': {
@@ -192,6 +193,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+      currentContainer: state => {
+        return state.containers.find(container => container.Name === state.currentContainer)
+      },
       getContainerByOwner: state => owner => {
           return state.containers.find(container => container.Name === owner)
       },

@@ -79,7 +79,7 @@ import { mapActions, mapGetters } from 'vuex'
                     this.timer = setInterval(() => {
                         this.listContainers()
                     }, 60000)
-                }).catch(error => {
+                }).catch(() => {
                     this.showOfflineError()
                 })
             })
@@ -125,14 +125,13 @@ import { mapActions, mapGetters } from 'vuex'
                 this.tableLoading = true
                 this.updateContainersAsync().then(() => {
                     this.tableLoading = false
-                }).catch(error => {
+                }).catch(() => {
                     this.showOfflineError()
                 })
             },
             showOfflineError() {
                 this.showPersistentDialog({
                     dialogType: 'error',
-                    color: null,
                     title: 'Kite Unavailable',
                     message: 'The KITE service is currently experiencing technical difficulties. Please try again in a few minutes.'
                 })

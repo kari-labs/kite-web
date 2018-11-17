@@ -27,7 +27,7 @@
                                     </v-card-title>
                                     <v-divider/>
                                     <v-card-text>
-                                        This is placeholder text
+                                        <code>This is placeholder text</code>
                                     </v-card-text>
                                 </v-card>
                             </v-flex>
@@ -44,43 +44,46 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
     export default {
         mounted() {
             this.$nextTick(() => {
-                if(!this.getContainerByOwner(this.$route.params.id)) {
+                if(!this.container) {
                     this.getSingleContainerAsync(this.$route.params.id).then(() => {
                         this.container = this.getContainerByOwner(this.$route.params.id)
-                    }).catch(error => {
-                        console.error(error)
+                    }).catch(() => {
                         this.showOfflineError()
                     })
                 } else {
-                    this.container = this.getContainerByOwner(this.$route.params.id).catch(error => {
-                        console.error(error)
-                        this.showOfflineError()
-                    })
+                    this.container = this.getContainerByOwner(this.$route.params.id)
                 }
             })
         },
-        data: () => ({
-            container: null
-        }),
         methods: {
             ...mapActions(['getSingleContainerAsync']),
-            ...mapMutations([
-                'setErrorText',
-                'setErrorTitle',
-                'setErrorVisibility'
-            ]),
             showOfflineError() {
-                this.setErrorTitle('KITE Unavailable')
-                this.setErrorText('The KITE service is currently experiencing technical difficulties. Please try again in a few minutes.')
-                this.setErrorVisibility(true)
+                this.showPersistentDialog({
+                    dialogType: 'error',
+                    title: 'Kite Unavailable',
+                    message: 'The KITE service is currently experiencing technical difficulties. Please try again in a few minutes.'
+                })
             }
         },
+        data: () => ({
+            _container: null
+        }),
         computed: {
-            ...mapGetters(['getContainerByOwner']),
+            ...mapGetters([
+                'getContainerByOwner'
+            ]),
+            container: {
+                get() {
+                    return this._container || this.getContainerByOwner(this.$route.params.id)
+                },
+                set(value) {
+                    this._container = value
+                }
+            },
             binding() {
                 const binding = {}
 
