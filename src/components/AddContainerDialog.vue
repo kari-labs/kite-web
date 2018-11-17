@@ -33,12 +33,11 @@
             </v-card>
         </v-dialog>
         <progress-dialog v-model="loading" @visChange="onProgressChange"/>
-        <success-dialog v-model="responseOkay" @closeDialog="onResponse"/>
     </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
     export default {
         model: {
             event: 'triggerRefresh'
@@ -69,7 +68,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
                         })
                         this.closeDialog()
                         this.loading = false
-                    }).catch(error => {
+                    }).catch(() => {
                         this.showPersistentDialog({
                             dialogType: 'error',
                             title: 'Request Incomplete',
@@ -105,7 +104,6 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
         }),
         components: {
             'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ '@/components/ErrorAlert.vue'),
-            'success-dialog': () => import(/* webpackChunkName: "dialogHelpers" */ '@/components/SuccessDialog.vue'),
             'progress-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/ProgressDialog.vue')
         }
     }

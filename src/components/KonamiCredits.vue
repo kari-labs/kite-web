@@ -58,12 +58,8 @@
                 this.$emit('visChange', val)
             },
             startPlayback() {
-                if(this.audioContext.state === 'suspended') {
-                    this.audioContext.resume()
-                } else {
-                    this.audioElement.play();
-                    console.log(this.audioContext.state)
-                }
+                if(this.audioContext.state === 'suspended') this.audioContext.resume()
+                else this.audioElement.play();
             }
         },
         watch: {
