@@ -146,11 +146,9 @@ import { mapActions, mapGetters } from 'vuex'
     }
 </script>
 
-<style lang="scss" scoped>
-.v-divider.v-divider--inset {
-    margin-left: 16px !important;
-}
-.v-alert.error {
-    margin-bottom: 0px !important;
-}
+<style lang="stylus" scoped>
+.v-divider.v-divider--inset
+    margin-left 16px !important
+.v-alert.error
+    margin-bottom 0px !important
 </style>

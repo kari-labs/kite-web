@@ -8,14 +8,14 @@ export default new Router({
   base: '/',
   routes: [
     {
-        path: '/',
-        name: 'listContainers',
-        component: () => import(/* webpackChunkName: "containerDashboard" */ '@/views/ContainerDashboard.vue')
+      path: '/',
+      name: 'listContainers',
+      component: () => import(/* webpackChunkName: "containerDashboard" */ '@/views/ContainerDashboard.vue')
     },
     {
-        path: '/container/:id',
-        name: 'manageContainer',
-        component: () => import(/* webpackChunkName: "containerManagement" */ '@/views/ContainerManagement.vue')
+      path: '/container/:id',
+      name: 'manageContainer',
+      component: () => import(/* webpackChunkName: "containerManagement" */ '@/views/ContainerManagement.vue')
     }
   ]
 })

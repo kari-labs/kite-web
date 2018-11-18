@@ -66,28 +66,28 @@ export default new Vuex.Store({
   },
   mutations: {
       updateContainers(state, containerList) {
-          state.containers = containerList
+        state.containers = containerList
       },
       setCurrentContainer(state, containerID) {
-          state.containers = containerID
+        state.containers = containerID
       },
       appendContainer(state, containerObject) {
-          state.containers.push(containerObject)
+        state.containers.push(containerObject)
       },
       setDialogType(state, value) {
-          state.dialog.type = value
+        state.dialog.type = value
       },
       setDialogVisibility(state, value) {
-          state.dialog.visible = value
+        state.dialog.visible = value
       },
       setDialogColor(state, value) {
-          state.dialog.color = value
+        state.dialog.color = value
       },
       setDialogTitle(state, value) {
-          state.dialog.title = value
+        state.dialog.title = value
       },
       setDialogText(state, message) {
-          state.dialog.text = message
+        state.dialog.text = message
       }
   },
   actions: {
@@ -193,25 +193,25 @@ export default new Vuex.Store({
     }
   },
   getters: {
-      currentContainer: state => {
-        return state.containers.find(container => container.Name === state.currentContainer)
-      },
-      getContainerByOwner: state => owner => {
-          return state.containers.find(container => container.Name === owner)
-      },
-      getAllContainers: state => { return state.containers },
-      getDialogDefaults: state => { return state.dialogTypes[state.dialog.type] },
-      getDialogVisibility: state => {
-          return state.dialog.visible
-      },
-      getDialogColor: state => {
-          return state.dialog.color || state.dialogTypes[state.dialog.type].color
-      },
-      getDialogTitle: state => {
-          return state.dialog.title || state.dialogTypes[state.dialog.type].defaultTitle
-      },
-      getDialogText: state => {
-          return state.dialog.text || state.dialogTypes[state.dialog.type].defaultText
-      }
+    currentContainer: state => {
+    return state.containers.find(container => container.Name === state.currentContainer)
+    },
+    getContainerByOwner: state => owner => {
+        return state.containers.find(container => container.Name === owner)
+    },
+    getAllContainers: state => { return state.containers },
+    getDialogDefaults: state => { return state.dialogTypes[state.dialog.type] },
+    getDialogVisibility: state => {
+        return state.dialog.visible
+    },
+    getDialogColor: state => {
+        return state.dialog.color || state.dialogTypes[state.dialog.type].color
+    },
+    getDialogTitle: state => {
+        return state.dialog.title || state.dialogTypes[state.dialog.type].defaultTitle
+    },
+    getDialogText: state => {
+        return state.dialog.text || state.dialogTypes[state.dialog.type].defaultText
+    }
   }
 })

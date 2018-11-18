@@ -2,7 +2,7 @@
   <v-app v-konami="triggerSecret">
     <neit-header/>
     <v-content id="content" class="scroll-y">
-        <router-view/>
+      <router-view/>
     </v-content>
     <super-secret v-model="secretPlaying" @visChange="doVisChange"/>
     <persistent-dialog/>
