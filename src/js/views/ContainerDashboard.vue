@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid fill-height>
+    <v-container fluid fill-height >
         <v-layout justify-center>
             <v-flex sm12 md8 lg8 xl6>
                 <container-table/>

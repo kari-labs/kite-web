@@ -14,7 +14,7 @@
                             <v-flex xs12>
                                 <v-form ref="form" v-model="formValid" lazy-validation>
                                     <v-text-field 
-                                        v-model="newContainerID"
+                                        v-model="studentID"
                                         :rules="idRules"
                                         :disabled="loading || responseError"
                                         label="Student ID"
@@ -39,25 +39,40 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
     export default {
         model: {
             event: 'triggerRefresh'
         },
         methods: {
-            ...mapActions(['addNewContainerAsync']),
             // Sends a POST request to create a container with
             // the given student ID
             createContainer() {
+                // If the form is valid
                 if(this.$refs.form.validate()) {
                     this.loading = true
-                    this.addNewContainerAsync(this.newContainerID).then(() => {
-                        this.responseOkay = true
-                        this.closeDialog()
-                        this.loading = false
-                    }).catch(error => {
-                        this.loading = false
-                        this.responseError = true
+
+                    return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
+                        const headers = new Headers()
+                        const init = {
+                            method: 'POST',
+                            headers,
+                            mode: 'cors',
+                            cache: 'no-store'
+                        }
+
+                        let request = new Request(`${Kite}api/docker/${this.studentID}`, init)
+
+                        fetch(request).then(async(response) => {
+                            console.log(await response.json())
+                            this.loading = false
+                            if(response.status === 500){
+                                this.responseError = true
+                            } else {
+                                this.responseOkay = true
+                                this.closeDialog()
+                                this.$emit('triggerRefresh')
+                            }
+                        })
                     })
                 }
             },
@@ -69,10 +84,10 @@ import { mapActions } from 'vuex'
             onProgressChange(val) {
                 this.loading = val
             },
-            onResponse() {}
+            onResponse(val) {}
         },
         data: () => ({
-            newContainerID: '',
+            studentID: '',
             showDialog: false,
             loading: false,
             responseError: false,
@@ -87,10 +102,10 @@ import { mapActions } from 'vuex'
             ]
         }),
         components: {
-            'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ '@/components/ErrorAlert.vue'),
-            'error-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/ErrorDialog.vue'),
-            'success-dialog': () => import(/* webpackChunkName: "dialogHelpers" */ '@/components/SuccessDialog.vue'),
-            'progress-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ '@/components/ProgressDialog.vue')
+            'error-alert': () => import(/* webpackChunkName: "alertHelpers", webpackPrefetch: true */ './ErrorAlert.vue'),
+            'error-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ './ErrorDialog.vue'),
+            'success-dialog': () => import(/* webpackChunkName: "dialogHelpers" */ './SuccessDialog.vue'),
+            'progress-dialog': () => import(/* webpackChunkName: "dialogHelpers", webpackPrefetch: true */ './ProgressDialog.vue')
         }
     }
 </script>

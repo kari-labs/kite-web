@@ -1,0 +1,97 @@
+service: neit-kite
+
+plugins:
+  - serverless-single-page-app-plugin
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: us-east-1
+  memorySize: 128
+
+package:
+  individually: true
+
+custom:
+  s3Bucket: neit-kite-${self:provider.stage}
+  s3LocalPath: dist/
+
+resources:
+  Resources:
+    ## S3 Bucket
+    KiteS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.s3Bucket}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html ## Reroute 404s to site entry point
+    ## Policy to grant read permission to Bucket files to CloudFront
+    KiteS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: KiteS3Bucket ## The Bucket this policy applies to
+        PolicyDocument: ## Start of IAM Policy
+          Statement:
+            - Sid: PublicReadGetObject ## Read perms
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+    ## CloudFront Distribution that serves the website to end-users
+    ## Initial distribution creation may take up to an hour and
+    ## blocks serverless deployment
+    KiteCloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          HttpVersion: 'http2'
+          Origins:
+            - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
+              Id: Kite
+              ## Restricts direct bucket access.
+              ## You can only access files through CloudFront
+              S3OriginConfig:
+                OriginAccessIdentity: origin-access-identity/cloudfront/E2I8701D0Z3ULD
+          Enabled: 'true'
+          ## Uncomment the following section in case you are using a custom domain
+          Aliases:
+            # Change this domain
+            - xn--18j7dl0b.xn--l8j5dwc.xn--q9jyb4c
+          DefaultRootObject: index.html
+          ## Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
+          ## The only exception are files that actually exist e.h. app.js, reset.css
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          DefaultCacheBehavior:
+            ## See if I can disallow some of these methods
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+            Compress: false
+            DefaultTTL: 1800
+            MaxTTL: 31536000
+            MinTTL: 60
+            ## Found in DistConfig -> Origins
+            TargetOriginId: Kite
+            ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+            ## Force clients to view in HTTPS
+            ViewerProtocolPolicy: redirect-to-https
+          ViewerCertificate:
+            # Change this to a Secure Variable sometime in the future
+            AcmCertificateArn: arn:aws:acm:us-east-1:385415781098:certificate/bfb4fb66-d66d-422f-8c76-568c78e888ab
+            SslSupportMethod: sni-only
+  Outputs:
+    KiteCloudFrontDistributionOutput:
+      Value:
+        'Fn::GetAtt': [ KiteCloudFrontDistribution, DomainName ]

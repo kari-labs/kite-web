@@ -5,11 +5,11 @@
             <v-toolbar-title v-else>Containers</v-toolbar-title>
             <v-divider class="mx-2" inset vertical/>
             <v-spacer/>
-            <add-dialog @triggerRefresh="listContainers"/>
+            <add-dialog @triggerRefresh="refreshContainers"/>
         </v-toolbar>
         <v-data-table 
             :headers="headers"
-            :items="availableContainers"
+            :items="fetchReturn"
             :loading="tableLoading"
             prev-icon="keyboard_arrow_left"
             next-icon="keyboard_arrow_right"
@@ -18,16 +18,7 @@
             class="elevation-1">
             <v-progress-linear slot="progress" color="primary" indeterminate/>
             <template slot="items" slot-scope="props">
-                <td>
-                    <v-btn 
-                        block
-                        flat
-                        slot="activator"
-                        :to="{ name: 'manageContainer', params: { id: props.item.Name }}"
-                        color="primary">
-                        {{ props.item.Name }}
-                    </v-btn>
-                </td>
+                <td>{{ props.item.Name }}</td>
                 <td class="text-xs-left">
                     <span v-if="props.item.State.Running" class="green--text">Running</span>
                     <span v-else-if="props.item.State.Dead" class="red--text">Dead</span>
@@ -64,7 +55,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
     export default {
         components: {
             'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ './AddContainerDialog.vue'),
@@ -74,14 +64,10 @@ import { mapActions } from 'vuex'
             // Only runs when the template is fully rendered
             this.$nextTick(() => {
                 // Auto refreshes the page every 60 seconds
-                this.updateContainersAsync().then(() => {
-                    this.tableLoading = false
-                    this.timer = setInterval(() => {
-                        this.listContainers()
-                    }, 60000)
-                }).catch((error) => {
-                    console.error(`ListContainers Promise Rejection: ${error}`)
-                })
+                this.listContainers()
+                this.timer = setInterval(() => {
+                    this.listContainers()
+                }, 60000)
             })
         },
         beforeDestroy() {
@@ -111,32 +97,55 @@ import { mapActions } from 'vuex'
                     text: 'Action',
                     sortable: false
                 }
-            ]
+            ],
+            fetchReturn: []
         }),
-        computed: {
-            availableContainers() {
-                return this.$store.getters.getAllContainers
-            }
-        },
         methods: {
-            ...mapActions(['updateContainersAsync']),
             listContainers() {
                 this.tableLoading = true
-                this.updateContainersAsync().then(() => {
-                    this.tableLoading = false
-                }).catch((error) => {
-                    console.error(`ListContainers Promise Rejection: ${error}`)
+                return import(/* webpackChunkName: "mixins" */ '../mixins/api.js').then(({ default: Kite }) => {
+                    const headers = new Headers()
+                    const init = {
+                        method: 'GET',
+                        headers,
+                        mode: 'cors',
+                        cache: 'no-store'
+                    }
+                    let request = new Request(`${Kite}api/docker`, init)
+
+                    fetch(request).then(async(response) => {
+                        // Convert returned data to json
+                        return await response.json()
+                    }).then((parsedData) => {
+                        parsedData.forEach((element, index) => {
+                            let name = element.Name
+                            let timeStart = element.State.StartedAt
+                            // Filter out the beginning '/' and the leading 'php'
+                            // Use the first result so we don't turn name into an array
+                            name = name.match(/\b\d+/)[0]
+                            timeStart = new Date(timeStart).toLocaleString()
+
+                            parsedData[index].Name = name
+                            parsedData[index].State.StartedAt = timeStart
+                        })
+                        console.log(parsedData)
+                        this.fetchReturn = parsedData
+
+                        // Request has loaded successfully, disable loader bar
+                        this.tableLoading = false
+                    })
                 })
+            },
+            refreshContainers() {
+                this.listContainers()
             }
         }
     }
 </script>
 
-<style lang="scss" scoped>
-.v-divider.v-divider--inset {
-    margin-left: 16px !important;
-}
-.v-alert.error {
-    margin-bottom: 0px !important;
-}
+<style lang="stylus" scoped>
+    .v-divider.v-divider--inset
+        margin-left 16px !important
+    .v-alert.error
+        margin-bottom 0px !important
 </style>

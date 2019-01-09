@@ -1,12 +1,11 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-//import VueKonami from 'vue-konami'
 import VueRouter from 'vue-router'
 import Vuetify from 'vuetify'
-import App from '@/App.vue'
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
+import Router from '../src/js/views/Router.vue'
+import Header from '../src/js/components/Header.vue'
+import Footer from '../src/js/components/Footer.vue'
 
-describe('App', () => {
+describe('Router', () => {
     let testBed;
 
     const routes = [
@@ -21,11 +20,10 @@ describe('App', () => {
     beforeEach(() => {
         const localVue = createLocalVue()
         localVue.config.productionTip = false
-        //localVue.use(VueKonami)
         localVue.use(VueRouter)
         localVue.use(Vuetify)
 
-        testBed = shallowMount(App, {
+        testBed = shallowMount(Router, {
             stubs: {
                 'neit-header': Header,
                 'neit-footer': Footer
