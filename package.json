@@ -7,6 +7,22 @@
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neit-kite/kite-web.git"
+  },
+  "keywords": [
+    "front-end",
+    "vue",
+    "vuetify",
+    "vuex"
+  ],
+  "author": "Joseph Zurowski",
+  "license": "Neat License",
+  "bugs": {
+    "url": "https://github.com/neit-kite/kite-web/issues"
+  },
+  "homepage": "https://github.com/neit-kite/kite-web#readme",
   "dependencies": {
     "vue": "^2.5.17",
     "vue-konami": "^1.0.0",
