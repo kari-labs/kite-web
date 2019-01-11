@@ -29,28 +29,26 @@
                     </v-btn>
                 </td>
                 <td class="text-xs-left">
-                    <span v-if="props.item.State.Running" class="green--text">Running</span>
-                    <span v-else-if="props.item.State.Dead" class="red--text">Dead</span>
-                    <span v-else-if="props.item.State.Restarting" class="orange--text">Restarting</span>
+                    <span>{{props.item.Status}}</span>
                 </td>
-                <td class="text-xs-left">{{ props.item.State.StartedAt }}</td>
+                <td class="text-xs-left">{{ props.item.Created }}</td>
                 <td class="justify-center layout px-0">
                     <v-btn
                         icon
                         small
                         :href="`https://${props.item.Name}.kite.neit.icu/`"
                         target="_blank">
-                        <v-icon small class="mr-2">
+                        <v-icon small >
                             open_in_new
                         </v-icon>
                     </v-btn>
                     <v-btn icon small disabled>
-                        <v-icon small class="mr-2">
+                        <v-icon small >
                             folder_open
                         </v-icon>
                     </v-btn>
                     <v-btn icon small disabled>
-                        <v-icon small class="mr-2">
+                        <v-icon small>
                             delete
                         </v-icon>
                     </v-btn>
@@ -87,10 +85,10 @@
             timer: null,
             headers: [
                 {
-                    text: 'Owner',
+                    text: 'Name',
                     align: 'left',
                     sortable: true,
-                    value: 'owner'
+                    value: 'Name'
                 },
                 {
                     text: 'Status',
@@ -114,28 +112,19 @@
             }
         },
         methods: {
-            listContainers() {
+            async listContainers() {
                 this.tableLoading = true
                 
-                this.$containers.getContainers().then(async(response) => {
-                    // Convert returned data to json
-                    return await response.json()
-                }).then((parsedData) => {
-                    parsedData.forEach((element, index) => {
-                        let name = element.Name
-                        let timeStart = element.State.StartedAt
-                        // Filter out the beginning '/' and the leading 'php'
-                        // Use the first result so we don't turn name into an array
-                        name = name.match(/\b\d+/)[0]
-                        timeStart = new Date(timeStart).toLocaleString()
-
-                        parsedData[index].Name = name
-                        parsedData[index].State.StartedAt = timeStart
-                    })
-                    console.log(parsedData)
-
+                this.$containers.getContainers()
+                .then(res => {
+                    console.log(res)
+                    const containers = res.data.containers.map(c=>({
+                        Name: c.Name,
+                        Status: c.State.Status,
+                        Created: new Date(c.Created).toLocaleString()
+                    }))
                     // Commit to the Vuex Action
-                    this.$store.dispatch('updateContainersAsync', parsedData)
+                    this.$store.dispatch('updateContainersAsync', containers)
 
                     // Request has loaded successfully, disable loader bar
                     this.tableLoading = false
