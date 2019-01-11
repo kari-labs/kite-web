@@ -1,24 +1,5 @@
 <template>
     <v-container>
-        <!-- <v-container
-            fluid
-            grid-list-md>
-            <v-layout row wrap>
-                <v-flex
-                    v-for="file in files"
-                    xs3
-                    :key="file.name">
-
-                    <v-card>
-                        <v-card-title primary-title>
-                            <div class="headline"><v-icon>{{file.isDir ? 'folder' : 'insert_drive_file'}}</v-icon></div>
-                            <div class="text-xs-center">{{file.name}}</div>
-                        </v-card-title>
-                    </v-card>
-
-                </v-flex>
-            </v-layout>
-        </v-container> -->
         <v-list two-line subheader>
             <v-subheader inset>008000118 / {{path}}</v-subheader>
 

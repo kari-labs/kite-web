@@ -25,9 +25,6 @@ export default class FileManager {
     
         document.body.removeChild(element);
     }
-    //downloadFile(userid, filepath) {
-//
-    //}
 }
 
 FileManager.install = function(Vue, options) {
