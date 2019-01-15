@@ -1,8 +1,7 @@
 <template>
     <div>
         <v-toolbar class="elevation-2" flat color="white">
-            <v-toolbar-title v-if="$vuetify.breakpoint.smAndUp">Available Containers</v-toolbar-title>
-            <v-toolbar-title v-else>Containers</v-toolbar-title>
+            <v-toolbar-title v-if="$vuetify.breakpoint.smAndUp">Containers</v-toolbar-title>
             <v-divider class="mx-2" inset vertical/>
             <v-spacer/>
             <add-dialog @triggerRefresh="listContainers"/>
@@ -32,26 +31,37 @@
                     <span>{{props.item.Status}}</span>
                 </td>
                 <td class="text-xs-left">{{ props.item.Created }}</td>
-                <td class="justify-center layout px-0">
-                    <v-btn
-                        icon
-                        small
-                        :href="`https://${props.item.Name}.kite.neit.icu/`"
-                        target="_blank">
-                        <v-icon small >
-                            open_in_new
-                        </v-icon>
-                    </v-btn>
-                    <v-btn icon small disabled>
-                        <v-icon small >
-                            folder_open
-                        </v-icon>
-                    </v-btn>
-                    <v-btn icon small disabled>
-                        <v-icon small>
-                            delete
-                        </v-icon>
-                    </v-btn>
+                <td class="layout px-0 ml-2">
+                    <v-tooltip bottom nudge-right>
+                        <v-btn
+                            icon
+                            small
+                            :href="`https://localhost${props.item.Name.replace('php', '')}`"
+                            target="_blank"
+                            slot="activator"
+                        >
+                            <v-icon small >open_in_new</v-icon>
+                        </v-btn>
+                        <span>
+                            Open in new tab
+                        </span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                        <v-btn icon small disabled slot="activator">
+                            <v-icon small >
+                                folder_open
+                            </v-icon>
+                        </v-btn>
+                        <span>File Explorer</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                        <v-btn icon small disabled slot="activator">
+                            <v-icon small>
+                                delete
+                            </v-icon>
+                        </v-btn>
+                        <span>Delete Container</span>
+                    </v-tooltip>
                 </td>
             </template>
             <template slot="no-data">
