@@ -14,7 +14,7 @@
                             <v-flex xs12>
                                 <v-form ref="form" v-model="formValid" lazy-validation>
                                     <v-text-field 
-                                        v-model="studentID"
+                                        v-model="newContainerID"
                                         :rules="idRules"
                                         :disabled="loading || responseError"
                                         label="Student ID"
@@ -39,15 +39,16 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
     export default {
         model: {
             event: 'triggerRefresh'
         },
         methods: {
+            ...mapActions(['addNewContainerAsync']),
             // Sends a POST request to create a container with
             // the given student ID
             createContainer() {
-                // If the form is valid
                 if(this.$refs.form.validate()) {
                     this.loading = true
 
@@ -75,7 +76,7 @@
             onResponse() {}
         },
         data: () => ({
-            studentID: '',
+            newContainerID: '',
             showDialog: false,
             loading: false,
             responseError: false,

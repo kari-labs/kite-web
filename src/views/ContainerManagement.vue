@@ -2,7 +2,7 @@
     <v-container fluid fill-height>
         <v-layout justify-center>
             <v-flex sm12 md10 xl8>
-                <v-card class="secondary-text">
+                <v-card v-if="container" class="secondary-text">
                     <v-card-title primary-title class="primary secondary-text">
                         <h3 class="headline mb-0">Viewing Data for {{ container.Name }}</h3>
                     </v-card-title>
@@ -44,11 +44,25 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
     export default {
+        mounted() {
+            this.$nextTick(() => {
+                if(!this.getContainerByOwner(this.$route.params.id)) {
+                    this.getSingleContainerAsync(this.$route.params.id).then(() => {
+                        this.container = this.getContainerByOwner(this.$route.params.id)
+                    })
+                } else this.container = this.getContainerByOwner(this.$route.params.id)
+            })
+        },
+        data: () => ({
+            container: null
+        }),
+        methods: {
+            ...mapActions(['getSingleContainerAsync'])
+        },
         computed: {
-            container() {
-                return this.$store.getters.getContainerByOwner(this.$route.params.id)
-            },
+            ...mapGetters(['getContainerByOwner']),
             binding() {
                 const binding = {}
 

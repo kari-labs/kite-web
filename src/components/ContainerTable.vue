@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
     export default {
         components: {
             'add-dialog': () => import(/* webpackChunkName: "createContainer", webpackPrefetch: true */ './AddContainerDialog.vue'),
@@ -81,10 +82,14 @@
             // Only runs when the template is fully rendered
             this.$nextTick(() => {
                 // Auto refreshes the page every 60 seconds
-                this.listContainers()
-                this.timer = setInterval(() => {
-                    this.listContainers()
-                }, 60000)
+                this.updateContainersAsync().then(() => {
+                    this.tableLoading = false
+                    this.timer = setInterval(() => {
+                        this.listContainers()
+                    }, 60000)
+                }).catch((error) => {
+                    console.error(`ListContainers Promise Rejection: ${error}`)
+                })
             })
         },
         beforeDestroy() {
